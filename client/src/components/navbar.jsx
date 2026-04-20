@@ -3,11 +3,10 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 
 function Navbar() {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-info fixed-top">
+    <nav className="navbar navbar-expand-lg navbar-light fixed-top">
       <div className="container-fluid">
         {/* Marca */}
         <a className="navbar-brand fw-bold" href="#">CapStyle</a>
-
         {/* Botón hamburguesa para móviles */}
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
           <span className="navbar-toggler-icon"></span>

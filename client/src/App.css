@@ -1,0 +1,78 @@
+/* Variables globales */
+:root {
+  --bs-body-bg: #ffffff;
+  --bs-body-color: oklch(0.145 0 0);
+
+  --bs-primary: #030213;
+  --bs-primary-rgb: 3, 2, 19;
+  --bs-secondary: oklch(0.95 0.0058 264.53);
+  --bs-secondary-rgb: 236, 236, 240;
+  --bs-success: #198754;
+  --bs-danger: #d4183d;
+  --bs-warning: #ffc107;
+  --bs-info: #0dcaf0;
+  --bs-light: #f3f3f5;
+  --bs-dark: #0a0a0a;
+
+  --bs-border-color: rgba(0, 0, 0, 0.1);
+
+  --font-size: 16px;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+
+  --input-background: #f3f3f5;
+  --switch-background: #cbced4;
+
+  --radius: 0.625rem;
+}
+
+/* Dark mode */
+.dark {
+  --bs-body-bg: oklch(0.145 0 0);
+  --bs-body-color: oklch(0.985 0 0);
+
+  --bs-primary: oklch(0.985 0 0);
+  --bs-secondary: oklch(0.269 0 0);
+  --bs-danger: oklch(0.396 0.141 25.723);
+  --bs-light: oklch(0.269 0 0);
+  --bs-dark: oklch(0.205 0 0);
+
+  --bs-border-color: oklch(0.269 0 0);
+}
+
+/* Tipografía base */
+html {
+  font-size: var(--font-size);
+}
+
+h1 {
+  font-size: 2rem; /* equivalente a text-2xl */
+  font-weight: var(--font-weight-medium);
+  line-height: 1.5;
+}
+
+h2 {
+  font-size: 1.5rem; /* text-xl */
+  font-weight: var(--font-weight-medium);
+  line-height: 1.5;
+}
+
+h3 {
+  font-size: 1.25rem; /* text-lg */
+  font-weight: var(--font-weight-medium);
+  line-height: 1.5;
+}
+
+h4,
+label,
+button {
+  font-size: 1rem; /* text-base */
+  font-weight: var(--font-weight-medium);
+  line-height: 1.5;
+}
+
+input {
+  font-size: 1rem;
+  font-weight: var(--font-weight-normal);
+  line-height: 1.5;
+}

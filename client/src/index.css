@@ -1,0 +1,33 @@
+.custom-bg {
+  background-color: #e0f7fa;
+}
+
+.hover-nav {
+  transition: all 0.3s ease;
+}
+
+.hover-nav:hover {
+  background-color: #2563eb;
+  color: white !important;
+}
+
+.hover-bg:hover {
+  background-color: #f3f4f6;
+}
+
+.hover-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+.hover-card img {
+  transition: transform 0.3s ease;
+}
+
+.hover-card:hover img {
+  transform: scale(1.05);
+}

@@ -1,12 +1,12 @@
-import { Navbar, Container, Nav } from 'react-bootstrap';
+import { Navbar as BootstrapNavbar, Container, Nav } from 'react-bootstrap';
 
-const Navbar = () => {
+const CustomNavbar = () => {
   return (
-    <Navbar expand="lg" style={{ backgroundColor: '#c1f0f6' }} className="px-4 py-3">
+    <BootstrapNavbar expand="lg" style={{ backgroundColor: '#c1f0f6' }} className="px-4 py-3">
       <Container fluid>
-        <Navbar.Brand href="#" className="fw-bold fs-3">CapStyle</Navbar.Brand>
-        <Navbar.Toggle aria-controls="navbar-nav" />
-        <Navbar.Collapse id="navbar-nav">
+        <BootstrapNavbar.Brand href="#" className="fw-bold fs-3">CapStyle</BootstrapNavbar.Brand>
+        <BootstrapNavbar.Toggle aria-controls="navbar-nav" />
+        <BootstrapNavbar.Collapse id="navbar-nav">
           <Nav className="mx-auto fw-medium">
             <Nav.Link href="#">Inicio</Nav.Link>
             <Nav.Link href="#">Nosotros</Nav.Link>
@@ -16,10 +16,10 @@ const Navbar = () => {
             <Nav.Link href="#" style={{ fontSize: '1.2rem' }}>🛒</Nav.Link>
             <Nav.Link href="#" style={{ fontSize: '1.2rem' }}>👤</Nav.Link>
           </Nav>
-        </Navbar.Collapse>
+        </BootstrapNavbar.Collapse>
       </Container>
-    </Navbar>
+    </BootstrapNavbar>
   );
 };
 
-export default Navbar;
+export default CustomNavbar;

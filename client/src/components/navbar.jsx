@@ -20,9 +20,8 @@ const CustomNavbar = () => {
         <BootstrapNavbar.Toggle aria-controls="navbar-nav" />
         <BootstrapNavbar.Collapse id="navbar-nav">
           <Nav className="mx-auto fw-medium">
-            <Nav.Link href="#">Home</Nav.Link>
-            <Nav.Link href="#">About Us</Nav.Link>
-            <Nav.Link href="#">Contact</Nav.Link>
+            <Nav.Link href="#">Inicio</Nav.Link>
+            <Nav.Link href="#">sobre Nosotros</Nav.Link>
           </Nav>
           <Nav className="gap-3 align-items-center">
             <Nav.Link href="#" style={{ fontSize: '1.2rem' }}>🛒</Nav.Link>

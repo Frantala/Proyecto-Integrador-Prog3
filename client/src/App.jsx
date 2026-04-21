@@ -4,17 +4,23 @@ import './index.css';
 import CustomNavbar from './components/Navbar'; 
 import ProductCard from './components/ProductCard';
 
+import dodgersClassic from './assets/Gorra - Los Angeles Dodgers 59FIFTY Black.jpeg';
+import bullsSnapback from './assets/Gorra- Chicago Bulls Negra.jpeg';
+
 function App() {
   const products = [
-    { id: 1, category: "CLASSIC", name: "Black Classic Cap", color: "Black", price: 24.99, image: "https://http2.mlstatic.com/D_NQ_NP_638062-MLA47138379410_082021-O.webp" },
-    { id: 2, category: "SNAPBACK", name: "Blue Snapback Cap", color: "Blue", price: 29.99, image: "https://http2.mlstatic.com/D_NQ_NP_908323-MLA45647589531_042021-O.webp" },
-    { id: 3, category: "TRUCKER", name: "White Trucker Cap", color: "White", price: 22.99, image: "https://http2.mlstatic.com/D_NQ_NP_824559-MLA44036502283_112020-O.webp" },
-    { id: 4, category: "SPORT", name: "Red Sport Cap", color: "Red", price: 27.99, image: "https://http2.mlstatic.com/D_NQ_NP_600277-MLA44036502281_112020-O.webp" },
-    { id: 5, category: "XENEIZE", name: "Boca Juniors Cap", color: "Blue & Gold", price: 35.00, image: "https://http2.mlstatic.com/D_NQ_NP_727038-MLA48740523456_012022-O.webp" },
-    { id: 6, category: "URBAN", name: "Gray Jordan Cap", color: "Gray", price: 32.50, image: "https://http2.mlstatic.com/D_NQ_NP_699564-MLA47872655383_102021-O.webp" },
-    { id: 7, category: "VINTAGE", name: "Worn Denim Cap", color: "Denim", price: 26.00, image: "https://http2.mlstatic.com/D_NQ_NP_769165-MLA47872715013_102021-O.webp" },
-    { id: 8, category: "XENEIZE", name: "Retro Boca Cap", color: "Yellow", price: 34.99, image: "https://http2.mlstatic.com/D_NQ_NP_619574-MLA48740523450_012022-O.webp" }
-  ];
+  { id: 1, category: "CLASSIC", name: "Los Angeles Dodgers Classic", color: "Royal Blue", price: 24.99, image: dodgersClassic},
+  { id: 2, category: "SNAPBACK", name: "Chicago Bulls Snapback", color: "Red & Black", price: 29.99, image:  bullsSnapback},
+  { id: 3, category: "TRUCKER", name: "Los Angeles Dodgers Trucker", color: "White & Blue", price: 22.99, image: "https://http2.mlstatic.com/D_NQ_NP_824559-MLA44036502283_112020-O.webp" },
+  { id: 4, category: "SPORT", name: "Los Angeles Dodgers Sport Edition", color: "Black", price: 27.99, image: "https://http2.mlstatic.com/D_NQ_NP_600277-MLA44036502281_112020-O.webp" },
+  { id: 5, category: "SPORT", name: "Miami Dolphins Cap", color: "Aqua & Orange", price: 35.00, image: "https://http2.mlstatic.com/D_NQ_NP_727038-MLA48740523456_012022-O.webp" },
+  { id: 6, category: "URBAN", name: "New Era Japanese Edition Shohei Ohtani", color: "Gray", price: 32.50, image: "https://http2.mlstatic.com/D_NQ_NP_699564-MLA47872655383_102021-O.webp" },
+  { id: 7, category: "VINTAGE", name: "New York Yankees x Supreme", color: "Navy", price: 26.00, image: "https://http2.mlstatic.com/D_NQ_NP_769165-MLA47872715013_102021-O.webp" },
+  { id: 8, category: "RETRO", name: "Chicago Bulls Retro", color: "Red", price: 34.99, image: "https://http2.mlstatic.com/D_NQ_NP_619574-MLA48740523450_012022-O.webp" },
+  { id: 9, category: "VINTAGE", name: "Los Angeles Dodgers Vintage", color: "Royal Blue", price: 26.00, image: "https://http2.mlstatic.com/D_NQ_NP_769165-MLA47872715013_102021-O.webp" },
+  { id: 10, category: "CLASSIC", name: "Oakland Athletics Green Cap", color: "Green & Gold", price: 34.99, image: "https://http2.mlstatic.com/D_NQ_NP_619574-MLA48740523450_012022-O.webp" },
+  { id: 11, category: "VINTAGE", name: "Oakland Athletics Vintage Cap", color: "Green", price: 26.00, image: "https://http2.mlstatic.com/D_NQ_NP_769165-MLA47872715013_102021-O.webp" }
+];
 
   return (
     <div style={{ backgroundColor: '#f0fbfc', minHeight: '100vh' }}>

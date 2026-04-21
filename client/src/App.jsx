@@ -3,9 +3,10 @@ import './App.css';
 import './index.css';
 import CustomNavbar from './components/Navbar'; 
 import ProductCard from './components/ProductCard';
+import bullsSnapback from './assets/Gorra-Chicag-Bulls.jpeg';
+import dodgersClassic from './assets/Gorra-Los-Angeles-Dodgers.jpeg';
 
-import dodgersClassic from './assets/Gorra - Los Angeles Dodgers 59FIFTY Black.jpeg';
-import bullsSnapback from './assets/Gorra- Chicago Bulls Negra.jpeg';
+
 
 function App() {
   const products = [

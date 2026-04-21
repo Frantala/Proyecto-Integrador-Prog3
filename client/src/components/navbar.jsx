@@ -10,7 +10,7 @@ const CustomNavbar = () => {
           <img
             src={logo}
             alt="CapStyle Logo"
-            height="40"
+            height="60"
             className="me-2 d-inline-block align-text-top"
           />
           {/* Texto */}

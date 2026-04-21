@@ -1,53 +1,25 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap-icons/font/bootstrap-icons.css';
-import logo from '../assets/logo-hustlery.png';               
+import { Navbar, Container, Nav } from 'react-bootstrap';
 
-function Navbar() {
+const CustomNavbar = () => {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light custom-bg fixed-top">
-      <div className="container-fluid">
-        {/* Marca con logo */}
-        <a className="navbar-brand fw-bold" href="#">
-          <img 
-            src={logo} 
-            alt="CapStyle Logo" 
-            height="40" 
-            className="d-inline-block align-text-top"
-          />
-        </a>
-
-        {/* Botón hamburguesa */}
-        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-          <span className="navbar-toggler-icon"></span>
-        </button>
-
-        {/* Links */}
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav mx-auto">
-            <li className="nav-item">
-              <a className="nav-link hover-nav active" href="#">Inicio</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link hover-nav" href="#">Nosotros</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link hover-nav" href="#">Contacto</a>
-            </li>
-          </ul>
-
-          {/* Íconos a la derecha */}
-          <div className="d-flex">
-            <a href="#" className="nav-link hover-nav">
-              <i className="bi bi-cart"></i>
-            </a>
-            <a href="#" className="nav-link hover-nav">
-              <i className="bi bi-person"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-    </nav>
+    <Navbar expand="lg" style={{ backgroundColor: '#c1f0f6' }} className="px-4 py-3">
+      <Container fluid>
+        <Navbar.Brand href="#" className="fw-bold fs-3">CapStyle</Navbar.Brand>
+        <Navbar.Toggle aria-controls="navbar-nav" />
+        <Navbar.Collapse id="navbar-nav">
+          <Nav className="mx-auto fw-medium">
+            <Nav.Link href="#">Inicio</Nav.Link>
+            <Nav.Link href="#">Nosotros</Nav.Link>
+            <Nav.Link href="#">Contacto</Nav.Link>
+          </Nav>
+          <Nav className="gap-3 align-items-center">
+            <Nav.Link href="#" style={{ fontSize: '1.2rem' }}>🛒</Nav.Link>
+            <Nav.Link href="#" style={{ fontSize: '1.2rem' }}>👤</Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   );
-}
+};
 
-export default Navbar;
+export default CustomNavbar;

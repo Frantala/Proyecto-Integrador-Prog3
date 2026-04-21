@@ -1,48 +1,23 @@
-import { ShoppingCart } from 'lucide-react';
+import { Card, Button, Badge } from 'react-bootstrap';
 
-const  ProductCard = ({ product }) => {
+const ProductCard = ({ nombre, color, precio, imagen, categoria }) => {
   return (
-    <div className="card h-100 shadow-sm hover-card">
-      {/* Imagen */}
-      <div className="position-relative" style={{ paddingTop: '100%', overflow: 'hidden' }}>
-        <img
-          src={product.image}
-          alt={product.name}
-          className="position-absolute top-0 start-0 w-100 h-100"
-          style={{ objectFit: 'cover' }}
-        />
-      </div>
-
-      {/* Contenido */}
-      <div className="card-body">
-        <span className="badge bg-secondary text-uppercase mb-2" style={{ fontSize: '0.7rem' }}>
-          {product.category}
-        </span>
-        <h5 className="card-title fw-semibold mb-2">{product.name}</h5>
-        <p className="card-text text-muted mb-3" style={{ fontSize: '0.9rem' }}>
-          Color: {product.color}
-        </p>
-        <div className="mb-3">
-          <span className="h4 fw-bold">${product.price}</span>
+    <Card className="h-100 border-0 shadow-sm">
+      <Card.Img variant="top" src={imagen} style={{ height: '220px', objectFit: 'cover' }} />
+      <Card.Body className="d-flex flex-column">
+        <Badge bg="secondary" className="mb-2 text-uppercase" style={{ width: 'fit-content', fontSize: '0.65rem' }}>
+          {categoria}
+        </Badge>
+        <Card.Title className="fw-bold fs-6">{nombre}</Card.Title>
+        <Card.Text className="text-muted small mb-3">Color: {color}</Card.Text>
+        <h4 className="fw-bold mt-auto">${precio}</h4>
+        <div className="d-flex gap-2 mt-2">
+          <Button variant="outline-secondary" className="w-100 btn-sm">Ver Detalles</Button>
+          <Button variant="primary" className="w-100 btn-sm">🛒 Agregar</Button>
         </div>
-
-        {/* Botones */}
-        <div className="d-flex gap-2">
-          <button className="btn btn-outline-secondary flex-fill" style={{ fontSize: '0.9rem' }}>
-            Ver Detalles
-          </button>
-          <button
-            className="btn btn-primary flex-fill d-flex align-items-center justify-content-center gap-2"
-            style={{ fontSize: '0.9rem' }}
-          >
-            <ShoppingCart style={{ width: '16px', height: '16px' }} />
-            <span className="d-none d-sm-inline">Agregar</span>
-          </button>
-        </div>
-      </div>
-    </div>
+      </Card.Body>
+    </Card>
   );
-}
-
+};
 
 export default ProductCard;

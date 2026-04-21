@@ -1,6 +1,6 @@
 import { ShoppingCart } from 'lucide-react';
 
-export function ProductCard({ product }) {
+function ProductCard({ product }) {
   return (
     <div className="card h-100 shadow-sm hover-card">
       {/* Imagen */}
@@ -41,3 +41,5 @@ export function ProductCard({ product }) {
     </div>
   );
 }
+
+export default ProductCard;

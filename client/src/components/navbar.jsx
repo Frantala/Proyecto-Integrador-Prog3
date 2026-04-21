@@ -1,6 +1,6 @@
 import { Navbar, Container, Nav } from 'react-bootstrap';
 
-const CustomNavbar = () => {
+const Navbar = () => {
   return (
     <Navbar expand="lg" style={{ backgroundColor: '#c1f0f6' }} className="px-4 py-3">
       <Container fluid>
@@ -22,4 +22,4 @@ const CustomNavbar = () => {
   );
 };
 
-export default CustomNavbar;
+export default Navbar;

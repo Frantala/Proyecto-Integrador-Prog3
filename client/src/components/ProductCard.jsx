@@ -2,8 +2,8 @@ import { Card, Button, Badge } from 'react-bootstrap';
 
 const ProductCard = ({ nombre, color, precio, imagen, categoria }) => {
   return (
-    <Card className="h-100 border-0 shadow-sm">
-      <Card.Img variant="top" src={imagen} style={{ height: '220px', objectFit: 'cover' }} />
+    <Card className="h-100 border-0 shadow-sm overflow-hidden">
+      <Card.Img variant="top" src={imagen} style={{ height: '250px', objectFit: 'cover', objectPosition: 'center' }} />
       <Card.Body className="d-flex flex-column">
         <Badge bg="secondary" className="mb-2 text-uppercase" style={{ width: 'fit-content', fontSize: '0.65rem' }}>
           {categoria}

@@ -19,9 +19,9 @@ function App() {
   return (
     <div style={{ backgroundColor: '#f0fbfc', minHeight: '100vh' }}>
       <CustomNavbar />
-      <Container className="py-5">
+      <Container fluid className="py-5 px-3 px-md-4">
         <h1 className="fw-bold mb-5">Nuestra Colección</h1>
-        <Row xs={1} sm={2} lg={4} className="g-4">
+        <Row xs={1} sm={2} md={3} lg={4} className="g-4">
           {productos.map((p) => (
             <Col key={p.id}>
               <ProductCard 

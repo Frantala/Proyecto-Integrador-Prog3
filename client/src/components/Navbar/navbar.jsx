@@ -1,5 +1,5 @@
 import { Navbar as BootstrapNavbar, Container, Nav } from 'react-bootstrap';
-import logo from '../assets/logo-hustlery.png'; 
+import logo from '../../assets/logo-hustlery.png'; 
 
 const CustomNavbar = () => {
   return (

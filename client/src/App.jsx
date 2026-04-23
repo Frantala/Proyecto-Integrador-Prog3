@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import './App.css';
 import './index.css';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import CustomNavbar from './components/Navbar/navbar.jsx';
 import ProductCard from './components/ProductCard/ProductCard.jsx';
 import AboutUs from './pages/AboutUs/AboutUs/AboutUs.jsx'; 
@@ -29,27 +30,35 @@ function App() {
     { id: 11, category: "VINTAGE", name: "Oakland Athletics Vintage Cap", color: "Green", price: 26.00, image: "https://http2.mlstatic.com/D_NQ_NP_769165-MLA47872715013_102021-O.webp" }
   ];
 
-  return (
-    <div style={{ backgroundColor: '#f0fbfc', minHeight: '100vh' }}>
-      {/* Paso 3: Pasar setView al Navbar */}
-      <CustomNavbar setView={setView} />
-      
-      {view === 'inicio' ? (
-        <Container className="py-5">
-          <h1 className="fw-bold mb-5">Nuestra Colección</h1>
-          <Row xs={1} sm={2} lg={4} className="g-4">
-            {products.map((p) => (
-              <Col key={p.id}>
-                <ProductCard product={p} />
-              </Col>
-            ))}
-          </Row>
-        </Container>
-      ) : (
-        <AboutUs />
-      )}
-    </div>
+   return (
+    <Router>
+      <div style={{ backgroundColor: "#f0fbfc", minHeight: "100vh" }}>
+        <CustomNavbar />
+        <Routes>
+          {/* Ruta principal */}
+          <Route
+            path="/"
+            element={
+              <Container className="py-5">
+                <h1 className="fw-bold mb-5">Nuestra Colección</h1>
+                <Row xs={1} sm={2} lg={4} className="g-4">
+                  {products.map((p) => (
+                    <Col key={p.id}>
+                      <ProductCard product={p} />
+                    </Col>
+                  ))}
+                </Row>
+              </Container>
+            }
+          />
+
+          {/* Ruta Sobre Nosotros */}
+          <Route path="/nosotros" element={<AboutUs />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
+
 
 export default App;

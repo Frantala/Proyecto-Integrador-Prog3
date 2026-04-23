@@ -1,15 +1,20 @@
+import { useState } from 'react'; 
 import { Container, Row, Col } from 'react-bootstrap';
 import './App.css';
 import './index.css';
 import CustomNavbar from './components/Navbar/navbar.jsx';
 import ProductCard from './components/ProductCard/ProductCard.jsx';
+import AboutUs from './pages/AboutUs/AboutUs/AboutUs.jsx'; 
+
+// Imágenes
 import bullsSnapback from './assets/Gorra-Chicag-Bulls.jpeg';
 import dodgersClassic from './assets/Gorra-Los-Angeles-Dodgers.jpeg';
 import Dolphins from './assets/Gorra-Miami-Dolphins.jpeg';
 import OaklandAthletics from './assets/Gorra-Oakland-Athletics.jpeg';
 
-
 function App() {
+  const [view, setView] = useState('inicio'); 
+
   const products = [
     { id: 1, category: "CLASSIC", name: "Los Angeles Dodgers Classic", color: "Royal Blue", price: 24.99, image: dodgersClassic },
     { id: 2, category: "SNAPBACK", name: "Chicago Bulls Snapback", color: "Red & Black", price: 29.99, image: bullsSnapback },
@@ -26,17 +31,23 @@ function App() {
 
   return (
     <div style={{ backgroundColor: '#f0fbfc', minHeight: '100vh' }}>
-      <CustomNavbar />
-      <Container className="py-5">
-        <h1 className="fw-bold mb-5">Nuestra Colección</h1>
-        <Row xs={1} sm={2} lg={4} className="g-4">
-          {products.map((p) => (
-            <Col key={p.id}>
-              <ProductCard product={p} />
-            </Col>
-          ))}
-        </Row>
-      </Container>
+      {/* Paso 3: Pasar setView al Navbar */}
+      <CustomNavbar setView={setView} />
+      
+      {view === 'inicio' ? (
+        <Container className="py-5">
+          <h1 className="fw-bold mb-5">Nuestra Colección</h1>
+          <Row xs={1} sm={2} lg={4} className="g-4">
+            {products.map((p) => (
+              <Col key={p.id}>
+                <ProductCard product={p} />
+              </Col>
+            ))}
+          </Row>
+        </Container>
+      ) : (
+        <AboutUs />
+      )}
     </div>
   );
 }

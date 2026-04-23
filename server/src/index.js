@@ -8,9 +8,16 @@ import { User } from './models/User.js';
 import Product from './models/Product.js';
 import Order from './models/Order.js';
 
+// importacion de las rutas 
+import gorrasRoutes from "./routes/gorras.routes.js";
+
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Usamos el enrutador con un prefijo
+app.use('/api', gorrasRoutes);
+
 
 // Función para arrancar todo
 async function main() {

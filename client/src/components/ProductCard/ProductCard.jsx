@@ -22,9 +22,6 @@ function ProductCard({ product }) {
             {product.category}
           </span>
           <h5 className="card-title fw-semibold mb-2">{product.name}</h5>
-          <p className="card-text text-muted mb-3" style={{ fontSize: "0.9rem" }}>
-            Color: {product.color}
-          </p>
           <div className="mb-3">
             <span className="h4 fw-bold">${product.price}</span>
           </div>

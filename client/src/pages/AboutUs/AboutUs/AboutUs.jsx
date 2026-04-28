@@ -12,7 +12,7 @@ const AboutUs = () => {
     },
     { 
       name: "Mateo Martin", 
-      bio: "Desarrollador enfocado en React y modelado 3D, fusionando la programación con el diseño de personajes." 
+      bio: "Desarrollador enfocado en modelado 3D, fusionando la programación con el diseño de personajes." 
     }
   ];
 
@@ -31,8 +31,7 @@ const AboutUs = () => {
             <div className="p-4 bg-white rounded shadow-sm h-100 border-start border-4 border-info">
               <h2 className="fw-bold text-primary">Nuestra Misión</h2>
               <p>
-                Ofrecer productos de alta calidad que reflejen la identidad urbana, 
-                utilizando tecnología de vanguardia para una experiencia de compra única.
+                Nuestra misión es empoderar el estilo personal a través de accesorios urbanos de alta calidad que representen la cultura de la calle. Buscamos ofrecer a nuestra comunidad las herramientas para expresarse con actitud, brindando diseños exclusivos que combinan tendencia, comodidad y el espíritu de superación constante.
               </p>
             </div>
           </Col>
@@ -40,15 +39,14 @@ const AboutUs = () => {
             <div className="p-4 bg-white rounded shadow-sm h-100 border-start border-4 border-info">
               <h2 className="fw-bold text-primary">Nuestra Visión</h2>
               <p>
-                Consolidarnos como el e-commerce líder en streetwear, integrando 
-                diseño digital avanzado y una comunidad apasionada por la moda.
+                Convertirnos en el referente principal del "headwear" urbano a nivel regional, siendo reconocidos no solo por la calidad de nuestras gorras, sino por crear una comunidad auténtica que valore el esfuerzo y el estilo de vida de la cultura urbana. Queremos que Hustlery sea un símbolo de identidad para quienes construyen su propio camino todos los días.
               </p>
             </div>
           </Col>
         </Row>
 
         {/* Sección del Equipo (Sin Roles) */}
-        <h2 className="fw-bold mb-4 text-center">Nuestro Equipo</h2>
+        <h2 className="fw-bold mb-4 text-center">Desarrolladores</h2>
         <Row className="justify-content-center g-4">
           {team.map((member, index) => (
             <Col key={index} md={4}>

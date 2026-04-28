@@ -1,5 +1,5 @@
 import { Container, Row, Col } from "react-bootstrap";
-import { InstagramIcon } from "lucide-react";
+
 
 function Footer() {
   return (
@@ -19,8 +19,8 @@ function Footer() {
               rel="noopener noreferrer"
               className="btn btn-outline-dark d-flex align-items-center gap-2"
             >
-              <InstagramIcon size={24} color="black" />
-              <span>Instagram</span>
+
+              <a href="https://www.instagram.com/hustlery__" target="_blank" rel="noopener noreferrer">Instagram</a>
             </a>
           </Col>
         </Row>

@@ -1,20 +1,20 @@
-import { useState } from 'react'; 
+import { useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import './App.css';
 import './index.css';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import CustomNavbar from './components/Navbar/navbar.jsx';
 import ProductCard from './components/ProductCard/ProductCard.jsx';
-import AboutUs from './pages/AboutUs/AboutUs/AboutUs.jsx'; 
+import AboutUs from './pages/AboutUs/AboutUs/AboutUs.jsx';
 
 // Imágenes
-import bullsSnapback from './assets/Gorra-Chicag-Bulls.jpeg';
-import dodgersClassic from './assets/Gorra-Los-Angeles-Dodgers.jpeg';
-import Dolphins from './assets/Gorra-Miami-Dolphins.jpeg';
-import OaklandAthletics from './assets/Gorra-Oakland-Athletics.jpeg';
+import bullsSnapback from '../public/images/Gorra-Chicag-Bulls.jpeg';
+import dodgersClassic from '../public/images/Gorra-Los-Angeles-Dodgers.jpeg';
+import Dolphins from '../public/images/Gorra-Miami-Dolphins.jpeg';
+import OaklandAthletics from '../public/images/Gorra-Oakland-Athletics.jpeg';
 
 function App() {
-  const [view, setView] = useState('inicio'); 
+  const [view, setView] = useState('inicio');
 
   const products = [
     { id: 1, category: "CLASSIC", name: "Los Angeles Dodgers Classic", color: "Royal Blue", price: 24.99, image: dodgersClassic },
@@ -30,7 +30,7 @@ function App() {
     { id: 11, category: "VINTAGE", name: "Oakland Athletics Vintage Cap", color: "Green", price: 26.00, image: "https://http2.mlstatic.com/D_NQ_NP_769165-MLA47872715013_102021-O.webp" }
   ];
 
-   return (
+  return (
     <Router>
       <div style={{ backgroundColor: "#f0fbfc", minHeight: "100vh" }}>
         <CustomNavbar />

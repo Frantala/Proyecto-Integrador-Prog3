@@ -3,7 +3,7 @@ import { FaInstagram } from "react-icons/fa";
 
 function Footer() {
   return (
-    <footer className="bg-info bg-opacity-25 mt-5 py-4">
+    <footer style={{ backgroundColor: "#c1f0f6" }} className="mt-5 py-4 shadow-sm">
       <Container>
         <Row className="align-items-center">
           {/* Texto */}

@@ -8,7 +8,7 @@ import CustomNavbar from './components/Navbar/navbar.jsx';
 import ProductCard from './components/ProductCard/ProductCard.jsx';
 import AboutUs from './pages/AboutUs/AboutUs/AboutUs.jsx';
 import Footer from './components/Footer/Footer.jsx';
-
+import Login from './pages/Login/Login.jsx';
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -67,6 +67,7 @@ function App() {
             }
           />
           <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
         <Footer />
       </div>

@@ -79,12 +79,6 @@ function Login() {
                 </Button>
               </Form>
 
-              <div className="text-center mt-3">
-                <a href="#" className="text-decoration-none" style={{ color: "#2563eb" }}>
-                  ¿Olvidaste tu contraseña?
-                </a>
-              </div>
-
               <div className="text-center mt-3 pt-3 border-top">
                 <span className="text-muted">¿No tienes cuenta? </span>
                 <a href="#" className="text-decoration-none fw-semibold" style={{ color: "#2563eb" }}>

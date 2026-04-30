@@ -23,8 +23,8 @@ app.use('/api', gorrasRoutes);
 async function main() {
     try {
         // Esta es la línea mágica que crea el archivo .sqlite
-        await sequelize.sync({ force: false }); 
-        console.log('Conexión a la base de datos exitosa.');
+        await sequelize.sync({ alter: true }); 
+        console.log('Conexión a la base de datos exitosa y modelos actualizados!');
 
         app.listen(PORT, () => {
             console.log('Server listening on port ' + PORT);

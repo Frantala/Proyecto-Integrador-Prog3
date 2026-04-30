@@ -3,11 +3,11 @@ import { FaInstagram } from "react-icons/fa";
 
 function Footer() {
   return (
-    <footer style={{ backgroundColor: "#c1f0f6" }} className="mt-5 py-4 shadow-sm">
-      <Container>
-        <Row className="align-items-center">
+    <footer style={{ backgroundColor: "#c1f0f6" }} className="mt-5 py-3 shadow-sm">
+      <Container className="h-100">
+        <Row className="align-items-center h-100">
           {/* Texto */}
-          <Col xs={12} sm={6} className="text-center text-sm-start mb-3 mb-sm-0">
+          <Col xs={12} sm={6} className="text-center text-sm-start">
             <p className="mb-0 text-dark">
               © 2026 Hustlery. Todos los derechos reservados.
             </p>

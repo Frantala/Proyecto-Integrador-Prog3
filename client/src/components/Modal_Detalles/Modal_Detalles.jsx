@@ -14,17 +14,17 @@ function Modal_Detalles({ show, handleClose, product }) {
           className="img-fluid mb-3"
           style={{ borderRadius: "8px" }}
         />
-        <p><strong>Category:</strong> {product.category}</p>
-        <p><strong>Color:</strong> {product.color}</p>
-        <p><strong>Price:</strong> ${product.price}</p>
-        <p><em>Exclusive details about this cap model.</em></p>
+        <p><strong>Categoria:</strong> {product.category}</p>
+        <p><strong>Stock:</strong> {product.stock}</p>
+        <p><strong>Precio:</strong> ${product.price}</p>
+        <p><em>Forro interno personalizado con el logo de la marca y tapa-costuras impresos</em></p>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
-          Close
+          Cerrar
         </Button>
         <Button variant="primary">
-          <ShoppingCart style={{ width: "16px", height: "16px" }} /> Add to Cart
+          <ShoppingCart style={{ width: "16px", height: "16px" }} /> Agregar al carrito
         </Button>
       </Modal.Footer>
     </Modal>

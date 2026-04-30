@@ -54,6 +54,7 @@ function App() {
                           product={{
                             id: p.id,
                             name: p.nombre,
+                            stock: p.stock,
                             price: p.precio,
                             image: p.imagenUrl,
                             category: p.marca

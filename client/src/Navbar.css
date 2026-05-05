@@ -1,53 +1,54 @@
-/* Navbar base */
+
 .navbar-custom {
-  min-height: 70px;
+  min-height: 60px;              
   display: flex;
   align-items: center;
+  justify-content: space-between; 
+  flex-wrap: nowrap;              
+  overflow: hidden;               
 }
 
-/* Logo */
 .logo-navbar {
-  height: 40px; /* celular */
+  height: 40px; 
 }
 
 @media (min-width: 768px) {
   .logo-navbar {
-    height: 60px; /* PC */
+    height: 60px; 
   }
 }
 
-/* Texto marca */
 .brand-text {
-  font-size: 1.1rem; /* celular */
+  font-size: 1.1rem; 
   font-weight: bold;
 }
 
 @media (min-width: 768px) {
   .brand-text {
-    font-size: 1.5rem; /* PC */
+    font-size: 1.5rem; 
   }
 }
 
 /* Links */
 .nav-links .nav-link {
-  font-size: 0.9rem; /* celular */
+  font-size: 0.9rem; 
   margin: 0 6px;
 }
 
 @media (min-width: 768px) {
   .nav-links .nav-link {
-    font-size: 1.1rem; /* PC */
+    font-size: 1.1rem; 
     margin: 0 12px;
   }
 }
 
 /* Íconos */
 .nav-icons .nav-link {
-  font-size: 1.1rem; /* celular */
+  font-size: 1.1rem; 
 }
 
 @media (min-width: 768px) {
   .nav-icons .nav-link {
-    font-size: 1.3rem; /* PC */
+    font-size: 1.3rem;
   }
 }

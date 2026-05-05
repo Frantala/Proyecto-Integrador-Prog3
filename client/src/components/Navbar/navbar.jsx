@@ -10,7 +10,7 @@ const CustomNavbar = () => {
           <img
             src={logo}
             alt="Hustlery Logo"
-            height="60"
+            height="85"
             className="me-2 d-inline-block align-text-top"
           />
           Hustlery

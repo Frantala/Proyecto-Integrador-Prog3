@@ -9,15 +9,15 @@ import ProductCard from './components/ProductCard/ProductCard.jsx';
 import AboutUs from './pages/AboutUs/AboutUs/AboutUs.jsx';
 import Footer from './components/Footer/Footer.jsx';
 import Login from './pages/Login/Login.jsx';
+import Cart from './pages/Cart/Cart.jsx'; 
 
 function App() {
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true); // Para mostrar un mensaje de carga
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchGorras = async () => {
       try {
-        // Pedimos los datos a tu servidor
         const response = await fetch('http://localhost:3000/api/inicio');
         if (!response.ok) throw new Error("Error en la respuesta del servidor");
         
@@ -54,7 +54,7 @@ function App() {
                           product={{
                             id: p.id,
                             name: p.nombre,
-                            stock: p.stock,
+                            stock: p.stock, 
                             price: p.precio,
                             image: p.imagenUrl,
                             category: p.marca
@@ -69,6 +69,7 @@ function App() {
           />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/cart" element={<Cart />} /> 
         </Routes>
         <Footer />
       </div>

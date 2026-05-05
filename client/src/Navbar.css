@@ -1,0 +1,53 @@
+/* Navbar base */
+.navbar-custom {
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+}
+
+/* Logo */
+.logo-navbar {
+  height: 40px; /* celular */
+}
+
+@media (min-width: 768px) {
+  .logo-navbar {
+    height: 60px; /* PC */
+  }
+}
+
+/* Texto marca */
+.brand-text {
+  font-size: 1.1rem; /* celular */
+  font-weight: bold;
+}
+
+@media (min-width: 768px) {
+  .brand-text {
+    font-size: 1.5rem; /* PC */
+  }
+}
+
+/* Links */
+.nav-links .nav-link {
+  font-size: 0.9rem; /* celular */
+  margin: 0 6px;
+}
+
+@media (min-width: 768px) {
+  .nav-links .nav-link {
+    font-size: 1.1rem; /* PC */
+    margin: 0 12px;
+  }
+}
+
+/* Íconos */
+.nav-icons .nav-link {
+  font-size: 1.1rem; /* celular */
+}
+
+@media (min-width: 768px) {
+  .nav-icons .nav-link {
+    font-size: 1.3rem; /* PC */
+  }
+}

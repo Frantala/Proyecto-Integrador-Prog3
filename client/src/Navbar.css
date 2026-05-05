@@ -1,0 +1,54 @@
+
+.navbar-custom {
+  min-height: 60px;              
+  display: flex;
+  align-items: center;
+  justify-content: space-between; 
+  flex-wrap: nowrap;              
+  overflow: hidden;               
+}
+
+.logo-navbar {
+  height: 40px; 
+}
+
+@media (min-width: 768px) {
+  .logo-navbar {
+    height: 60px; 
+  }
+}
+
+.brand-text {
+  font-size: 1.1rem; 
+  font-weight: bold;
+}
+
+@media (min-width: 768px) {
+  .brand-text {
+    font-size: 1.5rem; 
+  }
+}
+
+/* Links */
+.nav-links .nav-link {
+  font-size: 0.9rem; 
+  margin: 0 6px;
+}
+
+@media (min-width: 768px) {
+  .nav-links .nav-link {
+    font-size: 1.1rem; 
+    margin: 0 12px;
+  }
+}
+
+/* Íconos */
+.nav-icons .nav-link {
+  font-size: 1.1rem; 
+}
+
+@media (min-width: 768px) {
+  .nav-icons .nav-link {
+    font-size: 1.3rem;
+  }
+}

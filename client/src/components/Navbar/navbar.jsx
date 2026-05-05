@@ -23,8 +23,8 @@ const CustomNavbar = () => {
             <Nav.Link as={Link} to="/about-us">Sobre Nosotros</Nav.Link>
           </Nav>
           <Nav className="gap-3 align-items-center">
-            <Nav.Link href="#" style={{ fontSize: "1.2rem" }}>🛒</Nav.Link>
-            <Nav.Link href="#" style={{ fontSize: "1.2rem" }}>👤</Nav.Link>
+            <Nav.Link as={Link} to="/cart" style={{ fontSize: "1.2rem" }}>🛒</Nav.Link>
+            <Nav.Link as={Link} to="/login" style={{ fontSize: "1.2rem" }}>👤</Nav.Link>
           </Nav>
         </BootstrapNavbar.Collapse>
       </Container>

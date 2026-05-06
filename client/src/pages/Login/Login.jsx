@@ -8,6 +8,8 @@ function Login() {
     password: ""
   });
 
+  const [errors, setErrors] = useState({});
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -16,10 +18,31 @@ function Login() {
     }));
   };
 
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (formData.username && formData.username.length < 4) {
+      newErrors.username = "Debe tener al menos 4 caracteres";
+    }
+
+    if (formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Formato de email inválido";
+    }
+
+    if (formData.password && formData.password.length < 6) {
+      newErrors.password = "Debe tener al menos 6 caracteres";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Login attempt:", formData);
-    alert("Funcionalidad de login en desarrollo");
+    if (validateForm()) {
+      console.log("Login attempt:", formData);
+      alert("Funcionalidad de login en desarrollo");
+    }
   };
 
   return (
@@ -31,7 +54,7 @@ function Login() {
               <h4 className="fw-bold text-dark mb-0">Iniciar Sesión</h4>
             </Card.Header>
             <Card.Body style={{ backgroundColor: "#e0f7fa" }}>
-              <Form onSubmit={handleSubmit}>
+              <Form noValidate onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="username">
                   <Form.Label className="fw-semibold text-dark">Nombre de Usuario</Form.Label>
                   <Form.Control
@@ -41,7 +64,12 @@ function Login() {
                     onChange={handleChange}
                     placeholder="Ingresa tu nombre de usuario"
                     required
+                    isInvalid={!!errors.username}
+                    isValid={formData.username && !errors.username}
                   />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.username}
+                  </Form.Control.Feedback>
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="email">
@@ -53,7 +81,12 @@ function Login() {
                     onChange={handleChange}
                     placeholder="ejemplo@email.com"
                     required
+                    isInvalid={!!errors.email}
+                    isValid={formData.email && !errors.email}
                   />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.email}
+                  </Form.Control.Feedback>
                 </Form.Group>
 
                 <Form.Group className="mb-4" controlId="password">
@@ -65,7 +98,12 @@ function Login() {
                     onChange={handleChange}
                     placeholder="Ingresa tu contraseña"
                     required
+                    isInvalid={!!errors.password}
+                    isValid={formData.password && !errors.password}
                   />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.password}
+                  </Form.Control.Feedback>
                 </Form.Group>
 
                 <Button

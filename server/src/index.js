@@ -10,6 +10,8 @@ import Order from './models/Order.js';
 
 // importacion de las rutas 
 import gorrasRoutes from "./routes/gorras.routes.js";
+import authRoutes from "./routes/auth.routes.js";
+
 
 const app = express();
 app.use(cors());
@@ -17,7 +19,7 @@ app.use(express.json());
 
 // Usamos el enrutador con un prefijo
 app.use('/api', gorrasRoutes);
-
+app.use("/api", authRoutes);
 
 // Función para arrancar todo
 async function main() {

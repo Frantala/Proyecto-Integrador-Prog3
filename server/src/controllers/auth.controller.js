@@ -1,5 +1,6 @@
 import { User } from "../models/User.js";
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken' 
 
 
 export const registerUser = async (req , res) => {
@@ -44,16 +45,17 @@ export const loginUser = async (req, res) => {
         if (!user)
             return res.status(400).send({ message: "Usuario no encontrado" });
 
-        const isPasswordValid = await bcrypt.compare(password, user.password);
+        const comparasion = await bcrypt.compare(password, user.password);
 
-        if (!isPasswordValid)
-            return res.status(400).send({ message: "Contraseña incorrecta" });
+        if (!comparacion)
+            return res.status(400).send({ message: "Email y/o contraseña incorrecta" });
 
-        res.json({
-            id: user.id,
-            name: user.name,
-            email: user.email
-        });
+        // generate token
+        const secretKey = 'proyecto-2026';
+
+        const token = jwt.sign({ email }, secretKey, { expiresIn: '1h' });
+
+        return res.json(token);
     } catch (error) {
         res.status(500).send({ message: "Error al iniciar sesión", error });
     }

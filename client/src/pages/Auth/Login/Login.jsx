@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -51,7 +52,7 @@ function Login() {
         <Col md={{ span: 6, offset: 3 }}>
           <Card className="shadow-lg border-0">
             <Card.Header style={{ backgroundColor: "#c1f0f6" }}>
-              <h4 className="fw-bold text-dark mb-0">Iniciar Sesión</h4>
+              <h2 className="fw-bold text-dark text-center mb-0">Iniciar Sesión</h2>
             </Card.Header>
             <Card.Body style={{ backgroundColor: "#e0f7fa" }}>
               <Form noValidate onSubmit={handleSubmit}>
@@ -119,9 +120,9 @@ function Login() {
 
               <div className="text-center mt-3 pt-3 border-top">
                 <span className="text-muted">¿No tienes cuenta? </span>
-                <a href="#" className="text-decoration-none fw-semibold" style={{ color: "#2563eb" }}>
+                 <Link to="/register" className="text-decoration-none fw-semibold" style={{ color: "#2563eb" }}>
                   Regístrate
-                </a>
+                </Link>
               </div>
             </Card.Body>
           </Card>

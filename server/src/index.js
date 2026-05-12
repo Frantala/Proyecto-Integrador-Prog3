@@ -25,7 +25,7 @@ app.use("/api", authRoutes);
 async function main() {
     try {
         // Esta es la línea mágica que crea el archivo .sqlite
-        await sequelize.sync({ alter: true }); 
+        await sequelize.sync(); 
         console.log('Conexión a la base de datos exitosa y modelos actualizados!');
 
         app.listen(PORT, () => {

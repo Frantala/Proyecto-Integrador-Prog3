@@ -11,12 +11,42 @@ function Register() {
 
   const [errors, setErrors] = useState({});
 
+  const validarCampo = (name, value) => {
+    let errorMensaje = "";
+
+    if (name === "username" && value.trim().length > 0 && value.length < 4) {
+      errorMensaje = "Debe tener al menos 4 caracteres";
+    }
+
+    if (name === "email") {
+      if (value.trim().length > 0 && !value.includes("@")) {
+        errorMensaje = "El email debe incluir @";
+      } else if (value.trim().length > 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+        errorMensaje = "Formato de email inválido";
+      }
+    }
+
+    if (name === "password" && value.trim().length > 0 && value.length < 6) {
+      errorMensaje = "Debe tener al menos 6 caracteres";
+    }
+
+    if (name === "confirmPassword" && value.trim().length > 0 && value !== formData.password) {
+      errorMensaje = "Las contraseñas no coinciden";
+    }
+
+    setErrors(prev => ({
+      ...prev,
+      [name]: errorMensaje || undefined
+    }));
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
+    validarCampo(name, value);
   };
 
   const validateForm = () => {
@@ -26,7 +56,11 @@ function Register() {
       newErrors.username = "Debe tener al menos 4 caracteres";
     }
 
-    if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email)) {
+    if (!formData.email || formData.email.trim().length === 0) {
+      newErrors.email = "El email es obligatorio";
+    } else if (!formData.email.includes("@")) {
+      newErrors.email = "El email debe incluir @";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = "Formato de email inválido";
     }
 

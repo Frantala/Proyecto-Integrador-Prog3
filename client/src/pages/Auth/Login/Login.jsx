@@ -11,36 +11,63 @@ function Login() {
 
   const [errors, setErrors] = useState({});
 
+  // Ejecuta la validación específica para el campo que cambia
+  const validarCampoEnTiempoReal = (name, value) => {
+    let errorMensaje = "";
+    
+    if (value.trim() === "") {
+      setErrors(prev => ({ ...prev, [name]: undefined }));
+      return;
+    }
+
+    if (name === "username" && value.length < 4) {
+      errorMensaje = "Debe tener al menos 4 caracteres";
+    }
+
+    if (name === "email") {
+      if (!value.includes("@")) {
+        errorMensaje = "El email debe incluir @";
+      } else {
+        const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!regexEmail.test(value)) {
+          errorMensaje = "Formato de email inválido";
+        }
+      }
+    }
+
+    if (name === "password" && value.length < 6) {
+      errorMensaje = "Debe tener al menos 6 caracteres";
+    }
+
+    setErrors(prev => ({
+      ...prev,
+      [name]: errorMensaje || undefined
+    }));
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
+    
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
-  };
 
-  const validateForm = () => {
-    const newErrors = {};
-
-    if (formData.username && formData.username.length < 4) {
-      newErrors.username = "Debe tener al menos 4 caracteres";
-    }
-
-    if (formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Formato de email inválido";
-    }
-
-    if (formData.password && formData.password.length < 6) {
-      newErrors.password = "Debe tener al menos 6 caracteres";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    validarCampoEnTiempoReal(name, value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (validateForm()) {
+    
+    // Forzar validación de todos los campos al intentar enviar
+    validarCampoEnTiempoReal("username", formData.username);
+    validarCampoEnTiempoReal("email", formData.email);
+    validarCampoEnTiempoReal("password", formData.password);
+
+    const tieneErrores = Object.values(errors).some(error => error !== undefined);
+    const camposVacios = !formData.username || !formData.email || !formData.password;
+
+    if (!tieneErrores && !camposVacios) {
       console.log("Login attempt:", formData);
       alert("Funcionalidad de login en desarrollo");
     }
@@ -64,7 +91,7 @@ function Login() {
                     value={formData.username}
                     onChange={handleChange}
                     placeholder="Ingresa tu nombre de usuario"
-                    required
+                    
                     isInvalid={!!errors.username}
                     isValid={formData.username && !errors.username}
                   />
@@ -81,7 +108,10 @@ function Login() {
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="ejemplo@email.com"
-                    required
+                    style={{
+                      borderColor: errors.email ? "#d4183d" : undefined,
+                      boxShadow: errors.email ? "0 0 0 0.2rem rgba(212, 24, 61, 0.15)" : undefined
+                    }}
                     isInvalid={!!errors.email}
                     isValid={formData.email && !errors.email}
                   />
@@ -120,7 +150,7 @@ function Login() {
 
               <div className="text-center mt-3 pt-3 border-top">
                 <span className="text-muted">¿No tienes cuenta? </span>
-                 <Link to="/register" className="text-decoration-none fw-semibold" style={{ color: "#2563eb" }}>
+                <Link to="/register" className="text-decoration-none fw-semibold" style={{ color: "#2563eb" }}>
                   Regístrate
                 </Link>
               </div>

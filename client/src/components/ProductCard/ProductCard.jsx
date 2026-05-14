@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ShoppingCart } from "lucide-react";
 import Modal_Detalles from "../Modal_Detalles/Modal_Detalles"; // importa con el mismo nombre
 
-function ProductCard({ product }) {
+function ProductCard({ product, addToCart }) {
   const [show, setShow] = useState(false);
 
   return (
@@ -37,6 +37,7 @@ function ProductCard({ product }) {
             <button
               className="btn btn-primary flex-fill d-flex align-items-center justify-content-center gap-2"
               style={{ fontSize: "0.9rem" }}
+              onClick={() => addToCart(product)}
             >
               <ShoppingCart style={{ width: "16px", height: "16px" }} />
               <span className="d-none d-sm-inline">Agregar</span>
@@ -45,7 +46,7 @@ function ProductCard({ product }) {
         </div>
       </div>
       
-      <Modal_Detalles show={show} handleClose={() => setShow(false)} product={product} />
+      <Modal_Detalles show={show} handleClose={() => setShow(false)} product={product} addToCart={addToCart} />
     </>
   );
 }

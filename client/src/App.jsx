@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col} from 'react-bootstrap';
 import './App.css';
 import './index.css';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -15,6 +15,49 @@ import Register from './pages/Auth/Register/Register.jsx';
 function App() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  
+
+  const [cart, setCart] = useState([]);
+  const [mensaje, setMensaje] = useState("");
+
+  const addToCart = (product) => {
+  setCart((prevCart) => {
+    
+    const existingItem = prevCart.find((item) => item.id === product.id);
+    
+    setMensaje("El producto se ha agregado al carrito");
+    setTimeout(() => setMensaje(""), 1000);
+
+    if (existingItem) {
+      
+      return prevCart.map((item) =>
+        item.id === product.id && item.quantity < product.stock
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      );
+    } else {return [...prevCart, { ...product, quantity: 1 }];}
+    
+    
+  });
+};
+
+  const updateQuantity = (id, action) => {
+     setCart(cart.map(item => {
+    if (item.id === id) {
+      if (action === 'increase' && item.quantity < item.stock) {
+        return { ...item, quantity: item.quantity + 1 };
+      }
+      if (action === 'decrease' && item.quantity > 1) {
+        return { ...item, quantity: item.quantity - 1 };
+      }
+    }
+    return item;
+  }));
+};
+
+  const removeFromCart = (id) => {
+    setCart(cart.filter(product => product.id !== id))
+  };
 
   useEffect(() => {
     const fetchGorras = async () => {
@@ -38,6 +81,24 @@ function App() {
     <Router>
       <div style={{ backgroundColor: "#f0fbfc", minHeight: "100vh" }}>
         <CustomNavbar />
+      {mensaje && (
+    <div style={{
+      position: 'fixed',
+      bottom: '40px',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      backgroundColor: '#2563eb',
+      color: 'white',
+      padding: '12px 24px',
+      borderRadius: '30px', 
+      zIndex: 9999,
+      fontWeight: '600',
+      boxShadow: '0px 4px 15px rgba(0,0,0,0.3)',
+      whiteSpace: 'nowrap'   
+    }}>
+      {mensaje}
+    </div>
+              )}
         <Routes>
           <Route
             path="/"
@@ -60,6 +121,7 @@ function App() {
                             image: p.imagenUrl,
                             category: p.marca
                           }} 
+                          addToCart={addToCart}
                         />
                       </Col>
                     ))}
@@ -71,7 +133,12 @@ function App() {
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/cart" element={<Cart />} /> 
+          <Route path="/cart" element={<Cart
+          cartItems={cart}
+          setCart={setCart}
+          updateQuantity={updateQuantity}
+          removeFromCart={removeFromCart}
+          />} /> 
         </Routes>
         <Footer />
       </div>

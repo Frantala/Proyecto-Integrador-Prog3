@@ -1,7 +1,7 @@
 import { Modal, Button } from "react-bootstrap";
 import { ShoppingCart } from "lucide-react";
 
-function Modal_Detalles({ show, handleClose, product }) {
+function Modal_Detalles({ show, handleClose, product, addToCart }) {
   return (
     <Modal show={show} onHide={handleClose} centered>
       <Modal.Header closeButton>
@@ -23,7 +23,7 @@ function Modal_Detalles({ show, handleClose, product }) {
         <Button variant="secondary" onClick={handleClose}>
           Cerrar
         </Button>
-        <Button variant="primary">
+        <Button variant="primary" onClick={() => addToCart(product)}>
           <ShoppingCart style={{ width: "16px", height: "16px" }} /> Agregar al carrito
         </Button>
       </Modal.Footer>

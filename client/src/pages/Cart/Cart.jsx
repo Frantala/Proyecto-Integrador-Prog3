@@ -2,28 +2,9 @@ import { Container, Row, Col, Card, Button, Table } from "react-bootstrap";
 import { Trash2, Plus, Minus, ShoppingBag } from "lucide-react";
 import { Link } from "react-router-dom";
 
-const Cart = () => {
-  // Datos de ejemplo incluyendo 'stock' para la validación visual
-  const cartItems = [
-    {
-      id: 1,
-      name: "Gorra Chicago Bulls Red Visor",
-      price: 45000,
-      quantity: 1,
-      stock: 5,
-      image: "/public/images/Gorra-Chicag-Bulls.jpeg",
-      category: "Classic"
-    },
-    {
-      id: 2,
-      name: "Gorra Chicago Bulls Negra",
-      price: 48000,
-      quantity: 2,
-      stock: 3,
-      image: "/public/images/Gorra-Chicago-Bulls-Negra.jpeg",
-      category: "Urban"
-    }
-  ];
+const Cart = ({ cartItems, setCart, updateQuantity, removeFromCart }) => {
+ 
+
 
   // Cálculo del total directo sin subtotal ni envío
   const total = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
@@ -71,6 +52,7 @@ const Cart = () => {
                               size="sm" 
                               className="rounded-circle p-1"
                               disabled={item.quantity <= 1}
+                              onClick={() => updateQuantity(item.id, 'decrease')}
                             >
                               <Minus size={14} />
                             </Button>
@@ -82,6 +64,7 @@ const Cart = () => {
                               size="sm" 
                               className="rounded-circle p-1"
                               disabled={item.quantity >= item.stock}
+                              onClick={() => updateQuantity(item.id, 'increase')}
                             >
                               <Plus size={14} />
                             </Button>
@@ -97,7 +80,9 @@ const Cart = () => {
                         ${(item.price * item.quantity).toLocaleString()}
                       </td>
                       <td className="text-end">
-                        <Button variant="link" className="text-danger p-0">
+                        <Button variant="link" className="text-danger p-0"
+                        onClick={() => removeFromCart(item.id)}
+                        >
                           <Trash2 size={18} />
                         </Button>
                       </td>

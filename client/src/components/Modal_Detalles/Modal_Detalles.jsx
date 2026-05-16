@@ -1,9 +1,12 @@
 import { Modal, Button } from "react-bootstrap";
+import { useContext } from "react";
 import { ShoppingCart } from "lucide-react";
+import { ThemeContext } from "../../context/ThemeContext";
 
 function Modal_Detalles({ show, handleClose, product, addToCart }) {
+  const { theme, toggleTheme } = useContext(ThemeContext);
   return (
-    <Modal show={show} onHide={handleClose} centered>
+    <Modal contentClassName={theme === "light" ? "" : "bg-dark text-white"} show={show} onHide={handleClose} centered>
       <Modal.Header closeButton>
         <Modal.Title>{product.name}</Modal.Title>
       </Modal.Header>

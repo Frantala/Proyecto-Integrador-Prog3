@@ -1,9 +1,12 @@
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { useContext } from "react";
+import { ThemeContext } from './context/ThemeContext.jsx';
 import { Container, Row, Col} from 'react-bootstrap';
 import './App.css';
 import './index.css';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ThemeProvider} from './context/ThemeContext.jsx';
 import CustomNavbar from './components/Navbar/navbar.jsx';
 import ProductCard from './components/ProductCard/ProductCard.jsx';
 import AboutUs from './pages/AboutUs/AboutUs/AboutUs.jsx';
@@ -77,9 +80,14 @@ function App() {
     fetchGorras();
   }, []);
 
+  const { theme } = useContext(ThemeContext);
   return (
     <Router>
-      <div style={{ backgroundColor: "#f0fbfc", minHeight: "100vh" }}>
+      <div style={{
+        minHeight: "100vh", 
+        backgroundColor: theme === "light" ? "#f0fbfc" : "#121212",
+        color: theme === "light" ? "#000000" : "#ffffff",
+        transition: "all 0.3s ease"}}>
         <CustomNavbar />
       {mensaje && (
     <div style={{

@@ -1,27 +1,30 @@
+import { useContext } from "react";
 import { Container, Row, Col, Card, Button, Table } from "react-bootstrap";
 import { Trash2, Plus, Minus, ShoppingBag } from "lucide-react";
 import { Link } from "react-router-dom";
+import { ThemeContext } from "../../context/ThemeContext";
 
 const Cart = ({ cartItems, setCart, updateQuantity, removeFromCart }) => {
  
-
+  const { theme } = useContext(ThemeContext);
 
   // Cálculo del total directo sin subtotal ni envío
   const total = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
 
   return (
-    <div style={{ backgroundColor: "#f0fbfc", minHeight: "100vh" }} className="py-5">
+    <div style={{ backgroundColor: theme === "light" ? "#f0fbfc" : "#121212", minHeight: "100vh" }} className="py-5">
       <Container>
-        <h1 className="fw-bold mb-5 d-flex align-items-center gap-3">
+        {/* Título adaptativo */}
+        <h1 className={`fw-bold mb-5 d-flex align-items-center gap-3 ${theme === "light" ? "text-dark" : "text-white"}`}>
           <ShoppingBag size={40} /> Mi Carrito
         </h1>
 
         <Row className="g-4">
           <Col lg={8}>
-            <Card className="border-0 shadow-sm p-3">
-              <Table responsive className="align-middle">
+            <Card className={`border-0 shadow-sm p-3 ${theme === "light" ? "" : "bg-dark text-white"}`}>
+              <Table responsive className="align-middle" variant={theme === "light" ? "light" : "dark"}>
                 <thead>
-                  <tr className="text-muted border-bottom">
+                  <tr className={`border-bottom ${theme === "light" ? "text-muted" : "text-white-50"}`}>
                     <th>Producto</th>
                     <th className="text-center">Cantidad</th>
                     <th className="text-center">Total</th>
@@ -40,7 +43,10 @@ const Cart = ({ cartItems, setCart, updateQuantity, removeFromCart }) => {
                           />
                           <div>
                             <p className="mb-0 fw-bold">{item.name}</p>
-                            <small className="text-muted">Disponibles: {item.stock}</small>
+                            {/* Texto de stock secundario adaptativo */}
+                            <small className={theme === "light" ? "text-muted" : "text-white-50"}>
+                              Disponibles: {item.stock}
+                            </small>
                           </div>
                         </div>
                       </td>
@@ -48,7 +54,7 @@ const Cart = ({ cartItems, setCart, updateQuantity, removeFromCart }) => {
                         <div className="d-flex flex-column align-items-center">
                           <div className="d-flex align-items-center justify-content-center gap-2">
                             <Button 
-                              variant="outline-secondary" 
+                              variant={theme === "light" ? "outline-secondary" : "outline-light"} 
                               size="sm" 
                               className="rounded-circle p-1"
                               disabled={item.quantity <= 1}
@@ -60,7 +66,7 @@ const Cart = ({ cartItems, setCart, updateQuantity, removeFromCart }) => {
                             <span className="fw-bold px-2">{item.quantity}</span>
                             
                             <Button 
-                              variant="outline-secondary" 
+                              variant={theme === "light" ? "outline-secondary" : "outline-light"} 
                               size="sm" 
                               className="rounded-circle p-1"
                               disabled={item.quantity >= item.stock}
@@ -80,9 +86,7 @@ const Cart = ({ cartItems, setCart, updateQuantity, removeFromCart }) => {
                         ${(item.price * item.quantity).toLocaleString()}
                       </td>
                       <td className="text-end">
-                        <Button variant="link" className="text-danger p-0"
-                        onClick={() => removeFromCart(item.id)}
-                        >
+                        <Button variant="link" className="text-danger p-0" onClick={() => removeFromCart(item.id)}>
                           <Trash2 size={18} />
                         </Button>
                       </td>
@@ -91,7 +95,8 @@ const Cart = ({ cartItems, setCart, updateQuantity, removeFromCart }) => {
                 </tbody>
               </Table>
               <div className="mt-3">
-                <Link to="/" className="text-decoration-none text-primary fw-semibold">
+                {/* Enlace adaptativo */}
+                <Link to="/" className={`text-decoration-none fw-semibold ${theme === "light" ? "text-primary" : "text-info"}`}>
                   ← Continuar comprando
                 </Link>
               </div>
@@ -99,14 +104,19 @@ const Cart = ({ cartItems, setCart, updateQuantity, removeFromCart }) => {
           </Col>
 
           <Col lg={4}>
-            <Card className="border-0 shadow-sm overflow-hidden">
-              <Card.Header style={{ backgroundColor: "#c1f0f6" }} className="py-3 border-0 text-center">
+            <Card className={`border-0 shadow-sm overflow-hidden ${theme === "light" ? "" : "bg-dark"}`}>
+              {/* Encabezado corregido y adaptativo */}
+              <Card.Header 
+                style={{ backgroundColor: theme === "light" ? "#c1f0f6" : "#1a1a1a" }} 
+                className={`py-3 border-0 text-center fw-bold ${theme === "light" ? "text-dark" : "text-white"}`}
+              >
                 <h5 className="mb-0 fw-bold">Resumen de Compra</h5>
               </Card.Header>
-              <Card.Body className="p-4" style={{ backgroundColor: "#ffffff" }}>
+              <Card.Body className="p-4" style={{ backgroundColor: theme === "light" ? "#ffffff" : "#212529", color: theme === "light" ? "#000000" : "#ffffff" }}>
                 <div className="d-flex justify-content-between align-items-center mb-4">
                   <span className="fs-5 fw-bold">Total a pagar</span>
-                  <span className="fs-4 fw-bold text-primary">
+                  {/* Color del precio total adaptativo */}
+                  <span className={`fs-4 fw-bold ${theme === "light" ? "text-primary" : "text-info"}`}>
                     ${total.toLocaleString()}
                   </span>
                 </div>

@@ -1,12 +1,24 @@
+import { useContext } from "react";
 import { Navbar as BootstrapNavbar, Container, Nav } from "react-bootstrap";
+import { ThemeContext } from "../../context/ThemeContext";
 import { Link } from "react-router-dom";
 import logo from "../../assets/logo-hustlery.png";
 import "./Navbar.css";
 
 
 const CustomNavbar = () => {
+
+  const { theme, toggleTheme } = useContext(ThemeContext);
+
   return (
-    <BootstrapNavbar expand="lg" className="navbar-custom shadow-sm" style={{ backgroundColor: "#c1f0f6" }} sticky="top">
+    <BootstrapNavbar expand="lg" 
+    className="navbar-custom shadow-sm" 
+  
+    style={{ backgroundColor: theme === "light" ? "#c1f0f6" : "#1a1a1a" }} 
+  
+    variant={theme === "light" ? "light" : "dark"}
+    sticky="top"
+    >
       <Container fluid>
         
         {/* Brand */}
@@ -35,6 +47,9 @@ const CustomNavbar = () => {
           <Nav className="nav-icons align-items-center">
             <Nav.Link as={Link} to="/cart">🛒</Nav.Link>
             <Nav.Link as={Link} to="/login">👤</Nav.Link>
+            <Nav.Link onClick={toggleTheme} style={{ cursor: "pointer" }}>
+              {theme === "light" ? "🌘" : "☀️"}
+            </Nav.Link>
           </Nav>
         </BootstrapNavbar.Collapse>
       </Container>

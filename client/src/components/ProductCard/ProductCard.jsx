@@ -1,13 +1,15 @@
 import { useState } from "react";
+import { useContext } from "react";
 import { ShoppingCart } from "lucide-react";
 import Modal_Detalles from "../Modal_Detalles/Modal_Detalles"; // importa con el mismo nombre
+import { ThemeContext } from "../../context/ThemeContext";
 
 function ProductCard({ product, addToCart }) {
   const [show, setShow] = useState(false);
-
+  const { theme, toggleTheme } = useContext(ThemeContext);
   return (
     <>
-      <div className="card h-100 shadow-sm hover-card">
+      <div className={`card h-100 shadow-sm hover-card ${theme === "light" ? "" : "bg-dark text-white border-secondary"}`}>
         <div className="position-relative" style={{ paddingTop: "100%", overflow: "hidden" }}>
           <img
             src={product.image}

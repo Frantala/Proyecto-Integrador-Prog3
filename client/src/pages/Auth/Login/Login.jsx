@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { ThemeContext } from "../../../context/ThemeContext";
 
 function Login() {
+  const { theme } = useContext(ThemeContext);
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -11,7 +13,6 @@ function Login() {
 
   const [errors, setErrors] = useState({});
 
-  // Ejecuta la validación específica para el campo que cambia
   const validarCampoEnTiempoReal = (name, value) => {
     let errorMensaje = "";
     
@@ -59,7 +60,6 @@ function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    // Forzar validación de todos los campos al intentar enviar
     validarCampoEnTiempoReal("username", formData.username);
     validarCampoEnTiempoReal("email", formData.email);
     validarCampoEnTiempoReal("password", formData.password);
@@ -77,23 +77,32 @@ function Login() {
     <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
       <Row className="w-100">
         <Col md={{ span: 6, offset: 3 }}>
-          <Card className="shadow-lg border-0">
-            <Card.Header style={{ backgroundColor: "#c1f0f6" }}>
-              <h2 className="fw-bold text-dark text-center mb-0">Iniciar Sesión</h2>
+          <Card className={`shadow-lg border-0 ${theme === "light" ? "" : "bg-dark"}`}>
+            
+            {/* Encabezado adaptable */}
+            <Card.Header style={{ backgroundColor: theme === "light" ? "#c1f0f6" : "#1a1a1a" }}>
+              <h2 className={`fw-bold text-center mb-0 ${theme === "light" ? "text-dark" : "text-white"}`}>
+                Iniciar Sesión
+              </h2>
             </Card.Header>
-            <Card.Body style={{ backgroundColor: "#e0f7fa" }}>
+            
+            {/* Cuerpo de tarjeta adaptable */}
+            <Card.Body style={{ backgroundColor: theme === "light" ? "#e0f7fa" : "#212529" }}>
               <Form noValidate onSubmit={handleSubmit}>
+                
                 <Form.Group className="mb-3" controlId="username">
-                  <Form.Label className="fw-semibold text-dark">Nombre de Usuario</Form.Label>
+                  <Form.Label className={`fw-semibold ${theme === "light" ? "text-dark" : "text-white"}`}>
+                    Nombre de Usuario
+                  </Form.Label>
                   <Form.Control
                     type="text"
                     name="username"
                     value={formData.username}
                     onChange={handleChange}
                     placeholder="Ingresa tu nombre de usuario"
-                    
                     isInvalid={!!errors.username}
                     isValid={formData.username && !errors.username}
+                    className={theme === "light" ? "" : "bg-secondary text-white placeholder-light"}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.username}
@@ -101,7 +110,9 @@ function Login() {
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="email">
-                  <Form.Label className="fw-semibold text-dark">Email</Form.Label>
+                  <Form.Label className={`fw-semibold ${theme === "light" ? "text-dark" : "text-white"}`}>
+                    Email
+                  </Form.Label>
                   <Form.Control
                     type="email"
                     name="email"
@@ -114,6 +125,7 @@ function Login() {
                     }}
                     isInvalid={!!errors.email}
                     isValid={formData.email && !errors.email}
+                    className={theme === "light" ? "" : "bg-secondary text-white placeholder-light"}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.email}
@@ -121,7 +133,9 @@ function Login() {
                 </Form.Group>
 
                 <Form.Group className="mb-4" controlId="password">
-                  <Form.Label className="fw-semibold text-dark">Contraseña</Form.Label>
+                  <Form.Label className={`fw-semibold ${theme === "light" ? "text-dark" : "text-white"}`}>
+                    Contraseña
+                  </Form.Label>
                   <Form.Control
                     type="password"
                     name="password"
@@ -131,6 +145,7 @@ function Login() {
                     required
                     isInvalid={!!errors.password}
                     isValid={formData.password && !errors.password}
+                    className={theme === "light" ? "" : "bg-secondary text-white placeholder-light"}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.password}
@@ -149,8 +164,10 @@ function Login() {
               </Form>
 
               <div className="text-center mt-3 pt-3 border-top">
-                <span className="text-muted">¿No tienes cuenta? </span>
-                <Link to="/register" className="text-decoration-none fw-semibold" style={{ color: "#2563eb" }}>
+                <span className={theme === "light" ? "text-muted" : "text-white-50"}>
+                  ¿No tienes cuenta?{" "}
+                </span>
+                <Link to="/register" className={`text-decoration-none fw-semibold ${theme === "light" ? "text-primary" : "text-info"}`}>
                   Regístrate
                 </Link>
               </div>

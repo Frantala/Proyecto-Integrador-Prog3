@@ -20,7 +20,7 @@ function ProductCard({ product, addToCart }) {
         </div>
 
         <div className="card-body">
-          <span className="badge bg-secondary text-uppercase mb-2" style={{ fontSize: "0.7rem" }}>
+          <span className={`badge text-uppercase mb-2 ${theme === "light" ? "bg-secondary" : "bg-primary"}`} style={{ fontSize: "0.7rem" }}>
             {product.category}
           </span>
           <h5 className="card-title fw-semibold mb-2">{product.name}</h5>

@@ -33,6 +33,12 @@
   flex-shrink: 0;
 }
 
+.navbar-custom[style*="rgb(26, 26, 26)"] .brand-text {
+  color: #000000 !important;
+  text-shadow: 0 2px 4px rgba(255, 255, 255, 0.3);
+  font-weight: 900;
+}
+
 @media (min-width: 768px) {
   .brand-text {
     font-size: 1.5rem; 
@@ -130,6 +136,15 @@
   box-shadow: 0 0 0 0.25rem rgba(193, 240, 246, 0.5) !important;
 }
 
+/* Estilos para las líneas del hamburguesa en modo oscuro */
+.navbar-custom[style*="rgb(26, 26, 26)"] .navbar-toggler-custom .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23333333' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
+
+.navbar-toggler-custom .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23333333' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
+
 /* Collapse responsive */
 .navbar-collapse-custom {
   transition: all 0.3s ease-in-out;
@@ -142,6 +157,11 @@
     padding: 1rem;
     border-radius: 8px;
     width: 100%;
+  }
+
+  /* Estilos en modo oscuro para el collapse */
+  .navbar-custom[style*="rgb(26, 26, 26)"] .navbar-collapse-custom {
+    background-color: rgba(40, 40, 40, 0.98);
   }
 
   .nav-links {
@@ -157,6 +177,17 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     text-align: center;
     width: 100%;
+    color: #333 !important;
+  }
+
+  /* Links en modo oscuro */
+  .navbar-custom[style*="rgb(26, 26, 26)"] .nav-links .nav-link {
+    color: #e0e0e0 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .navbar-custom[style*="rgb(26, 26, 26)"] .nav-links .nav-link:hover {
+    color: #61dafb !important;
   }
 
   .nav-links .nav-link:last-child {
@@ -170,6 +201,19 @@
     border-top: 2px solid rgba(0, 0, 0, 0.1);
     margin: 0 !important;
     justify-content: center;
+  }
+
+  /* Icons en modo oscuro */
+  .navbar-custom[style*="rgb(26, 26, 26)"] .nav-icons {
+    border-top: 2px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .navbar-custom[style*="rgb(26, 26, 26)"] .nav-icons .nav-link {
+    color: #e0e0e0 !important;
+  }
+
+  .navbar-custom[style*="rgb(26, 26, 26)"] .nav-icons .nav-link:hover {
+    color: #61dafb !important;
   }
 
   .nav-icons .nav-link {

@@ -14,6 +14,7 @@ import Footer from './components/Footer/Footer.jsx';
 import Login from './pages/Auth/Login/Login.jsx';
 import Cart from './pages/Cart/Cart.jsx'; 
 import Register from './pages/Auth/Register/Register.jsx';
+import AdminPanel from './pages/AdminPanel/AdminPanel.jsx';
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -147,6 +148,8 @@ function App() {
           updateQuantity={updateQuantity}
           removeFromCart={removeFromCart}
           />} /> 
+          
+          <Route path="/admin" element={<AdminPanel />} />
         </Routes>
         <Footer />
       </div>

@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { ThemeContext } from "../../../context/ThemeContext";
 
 function Register() {
+  const { theme } = useContext(ThemeContext);
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -88,14 +91,18 @@ function Register() {
     <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
       <Row className="w-100">
         <Col md={{ span: 6, offset: 3 }}>
-          <Card className="shadow-lg border-0">
-            <Card.Header style={{ backgroundColor: "#c1f0f6" }}>
-              <h2 className="fw-bold text-dark text-center mb-0">Crear una nueva cuenta</h2>
+          <Card className={`shadow-lg border-0 ${theme === "light" ? "" : "bg-dark"}`}>
+            
+            {/* Encabezado adaptable */}
+            <Card.Header style={{ backgroundColor: theme === "light" ? "#c1f0f6" : "#1a1a1a" }}>
+              <h2 className={`fw-bold text-center mb-0 ${theme === "light" ? "text-dark" : "text-white"}`}>Crear una nueva cuenta</h2>
             </Card.Header>
-            <Card.Body style={{ backgroundColor: "#e0f7fa" }}>
+            
+            {/* Cuerpo de tarjeta adaptable */}
+            <Card.Body style={{ backgroundColor: theme === "light" ? "#e0f7fa" : "#212529" }}>
               <Form noValidate onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="username">
-                  <Form.Label className="fw-semibold text-dark">Nombre de Usuario</Form.Label>
+                  <Form.Label className={`fw-semibold ${theme === "light" ? "text-dark" : "text-white"}`}>Nombre de Usuario</Form.Label>
                   <Form.Control
                     type="text"
                     name="username"
@@ -105,6 +112,7 @@ function Register() {
                     required
                     isInvalid={!!errors.username}
                     isValid={formData.username && !errors.username}
+                    className={theme === "light" ? "" : "bg-secondary text-white placeholder-light"}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.username}
@@ -112,7 +120,7 @@ function Register() {
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="email">
-                  <Form.Label className="fw-semibold text-dark">Email</Form.Label>
+                  <Form.Label className={`fw-semibold ${theme === "light" ? "text-dark" : "text-white"}`}>Email</Form.Label>
                   <Form.Control
                     type="email"
                     name="email"
@@ -122,6 +130,7 @@ function Register() {
                     required
                     isInvalid={!!errors.email}
                     isValid={formData.email && !errors.email}
+                    className={theme === "light" ? "" : "bg-secondary text-white placeholder-light"}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.email}
@@ -129,7 +138,7 @@ function Register() {
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="password">
-                  <Form.Label className="fw-semibold text-dark">Contraseña</Form.Label>
+                  <Form.Label className={`fw-semibold ${theme === "light" ? "text-dark" : "text-white"}`}>Contraseña</Form.Label>
                   <Form.Control
                     type="password"
                     name="password"
@@ -139,6 +148,7 @@ function Register() {
                     required
                     isInvalid={!!errors.password}
                     isValid={formData.password && !errors.password}
+                    className={theme === "light" ? "" : "bg-secondary text-white placeholder-light"}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.password}
@@ -146,7 +156,7 @@ function Register() {
                 </Form.Group>
 
                 <Form.Group className="mb-4" controlId="confirmPassword">
-                  <Form.Label className="fw-semibold text-dark">Confirmar Contraseña</Form.Label>
+                  <Form.Label className={`fw-semibold ${theme === "light" ? "text-dark" : "text-white"}`}>Confirmar Contraseña</Form.Label>
                   <Form.Control
                     type="password"
                     name="confirmPassword"
@@ -156,6 +166,7 @@ function Register() {
                     required
                     isInvalid={!!errors.confirmPassword}
                     isValid={formData.confirmPassword && !errors.confirmPassword}
+                    className={theme === "light" ? "" : "bg-secondary text-white placeholder-light"}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.confirmPassword}
@@ -172,6 +183,15 @@ function Register() {
                   Registrarse
                 </Button>
               </Form>
+
+              <div className="text-center mt-3 pt-3 border-top">
+                <span className={theme === "light" ? "text-muted" : "text-white-50"}>
+                  ¿Ya tienes cuenta?{" "}
+                </span>
+                <Link to="/login" className={`text-decoration-none fw-semibold ${theme === "light" ? "text-primary" : "text-info"}`}>
+                  Inicia sesión
+                </Link>
+              </div>
             </Card.Body>
           </Card>
         </Col>

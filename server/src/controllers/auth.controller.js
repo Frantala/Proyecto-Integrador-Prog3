@@ -50,10 +50,12 @@ export const loginUser = async (req, res) => {
         if (!comparacion)
             return res.status(400).send({ message: "Email y/o contraseña incorrecta" });
 
+        // extraemos el id y el role  del usuario de la base de datos
+        const {id, role } = user;
         // generate token
         const secretKey = 'proyecto-2026';
 
-        const token = jwt.sign({ email }, secretKey, { expiresIn: '1h' });
+        const token = jwt.sign({ id,email, role }, secretKey, { expiresIn: '1h' });
 
         return res.json(token);
     } catch (error) {

@@ -27,6 +27,7 @@ export const registerUser = async (req , res) => {
         name,
         email,
         password: hashedPassword,
+        role: "usuario" // se asigna el rol exacto que espera el modelo
     })
 
     res.json(newUser.id);

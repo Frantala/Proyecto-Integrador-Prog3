@@ -5,22 +5,18 @@ import { Link } from "react-router-dom";
 import logo from "../../assets/logo-hustlery.png";
 import "./Navbar.css";
 
-
 const CustomNavbar = () => {
-
   const { theme, toggleTheme } = useContext(ThemeContext);
 
   return (
-    <BootstrapNavbar expand="lg" 
-    className="navbar-custom shadow-sm" 
-  
-    style={{ backgroundColor: theme === "light" ? "#c1f0f6" : "#1a1a1a" }} 
-  
-    variant={theme === "light" ? "light" : "dark"}
-    sticky="top"
+    <BootstrapNavbar
+      expand="lg"
+      className="navbar-custom shadow-sm"
+      style={{ backgroundColor: theme === "light" ? "#c1f0f6" : "#1a1a1a" }}
+      variant={theme === "light" ? "light" : "dark"}
+      sticky="top"
     >
       <Container fluid>
-        
         {/* Brand */}
         <BootstrapNavbar.Brand as={Link} to="/" className="brand-custom d-flex align-items-center">
           <img
@@ -36,11 +32,12 @@ const CustomNavbar = () => {
 
         {/* Contenedor colapsable */}
         <BootstrapNavbar.Collapse id="basic-navbar-nav" className="navbar-collapse-custom">
-          
           {/* Links - Centered */}
           <Nav className="nav-links fw-medium">
             <Nav.Link as={Link} to="/">Inicio</Nav.Link>
             <Nav.Link as={Link} to="/about-us">Sobre Nosotros</Nav.Link>
+            {/* ✅ Nuevo link al AdminPanel */}
+            <Nav.Link as={Link} to="/admin">Admin</Nav.Link>
           </Nav>
 
           {/* Icons - Right */}

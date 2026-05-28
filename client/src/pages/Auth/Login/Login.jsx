@@ -1,11 +1,14 @@
 import { useState, useContext } from "react";
 import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ThemeContext } from "../../../context/ThemeContext";
 import { AuthContext } from "../../../context/AuthContext";
 
 function Login() {
   const { theme } = useContext(ThemeContext);
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -13,46 +16,11 @@ function Login() {
   });
 
   const [errors, setErrors] = useState({});
+  const [error, setError] = useState(null);
 
   const validarCampoEnTiempoReal = (name, value) => {
     let errorMensaje = "";
 
-  const { login } = useContext(AuthContext);
-    const navigate = useNavigate();
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setError(null);
-
-        try {
-            // 2. Hacemos el fetch a tu backend
-            const response = await fetch('http://localhost:3000/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email, password })
-            });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                // Si el backend responde con un error (ej: contraseña incorrecta)
-                throw new Error(data.message || 'Error al iniciar sesión');
-            }
-
-            
-            // Tu backend debería devolver el token en una propiedad (ej: data.token)
-            login(data.token);
-
-            // 4. Redirigimos al usuario a la página de inicio
-            navigate('/inicio');
-
-        } catch (err) {
-            setError(err.message);
-        }
-    };
-    
     if (value.trim() === "") {
       setErrors(prev => ({ ...prev, [name]: undefined }));
       return;
@@ -85,18 +53,18 @@ function Login() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
-
     validarCampoEnTiempoReal(name, value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
+    setError(null);
+
+    // Validar antes de enviar
     validarCampoEnTiempoReal("username", formData.username);
     validarCampoEnTiempoReal("email", formData.email);
     validarCampoEnTiempoReal("password", formData.password);
@@ -104,9 +72,28 @@ function Login() {
     const tieneErrores = Object.values(errors).some(error => error !== undefined);
     const camposVacios = !formData.username || !formData.email || !formData.password;
 
-    if (!tieneErrores && !camposVacios) {
-      console.log("Login attempt:", formData);
-      alert("Funcionalidad de login en desarrollo");
+    if (tieneErrores || camposVacios) return;
+
+    try {
+      const response = await fetch("http://localhost:3000/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: formData.email, password: formData.password })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Error al iniciar sesión");
+      }
+
+      // Guardar token en AuthContext
+      login(data.token);
+
+      // Redirigir al inicio
+      navigate("/inicio");
+    } catch (err) {
+      setError(err.message);
     }
   };
 
@@ -115,18 +102,14 @@ function Login() {
       <Row className="w-100">
         <Col md={{ span: 6, offset: 3 }}>
           <Card className={`shadow-lg border-0 ${theme === "light" ? "" : "bg-dark"}`}>
-            
-            {/* Encabezado adaptable */}
             <Card.Header style={{ backgroundColor: theme === "light" ? "#c1f0f6" : "#1a1a1a" }}>
               <h2 className={`fw-bold text-center mb-0 ${theme === "light" ? "text-dark" : "text-white"}`}>
                 Iniciar Sesión
               </h2>
             </Card.Header>
-            
-            {/* Cuerpo de tarjeta adaptable */}
             <Card.Body style={{ backgroundColor: theme === "light" ? "#e0f7fa" : "#212529" }}>
               <Form noValidate onSubmit={handleSubmit}>
-                
+                {/* Username */}
                 <Form.Group className="mb-3" controlId="username">
                   <Form.Label className={`fw-semibold ${theme === "light" ? "text-dark" : "text-white"}`}>
                     Nombre de Usuario
@@ -139,13 +122,12 @@ function Login() {
                     placeholder="Ingresa tu nombre de usuario"
                     isInvalid={!!errors.username}
                     isValid={formData.username && !errors.username}
-                    className={theme === "light" ? "" : "bg-secondary text-white placeholder-light"}
+                    className={theme === "light" ? "" : "bg-secondary text-white"}
                   />
-                  <Form.Control.Feedback type="invalid">
-                    {errors.username}
-                  </Form.Control.Feedback>
+                  <Form.Control.Feedback type="invalid">{errors.username}</Form.Control.Feedback>
                 </Form.Group>
 
+                {/* Email */}
                 <Form.Group className="mb-3" controlId="email">
                   <Form.Label className={`fw-semibold ${theme === "light" ? "text-dark" : "text-white"}`}>
                     Email
@@ -156,19 +138,14 @@ function Login() {
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="ejemplo@email.com"
-                    style={{
-                      borderColor: errors.email ? "#d4183d" : undefined,
-                      boxShadow: errors.email ? "0 0 0 0.2rem rgba(212, 24, 61, 0.15)" : undefined
-                    }}
                     isInvalid={!!errors.email}
                     isValid={formData.email && !errors.email}
-                    className={theme === "light" ? "" : "bg-secondary text-white placeholder-light"}
+                    className={theme === "light" ? "" : "bg-secondary text-white"}
                   />
-                  <Form.Control.Feedback type="invalid">
-                    {errors.email}
-                  </Form.Control.Feedback>
+                  <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
                 </Form.Group>
 
+                {/* Password */}
                 <Form.Group className="mb-4" controlId="password">
                   <Form.Label className={`fw-semibold ${theme === "light" ? "text-dark" : "text-white"}`}>
                     Contraseña
@@ -179,22 +156,19 @@ function Login() {
                     value={formData.password}
                     onChange={handleChange}
                     placeholder="Ingresa tu contraseña"
-                    required
                     isInvalid={!!errors.password}
                     isValid={formData.password && !errors.password}
-                    className={theme === "light" ? "" : "bg-secondary text-white placeholder-light"}
+                    className={theme === "light" ? "" : "bg-secondary text-white"}
                   />
-                  <Form.Control.Feedback type="invalid">
-                    {errors.password}
-                  </Form.Control.Feedback>
+                  <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
                 </Form.Group>
+
+                {error && <p className="text-danger fw-semibold">{error}</p>}
 
                 <Button
                   type="submit"
                   className="w-100 fw-semibold"
                   style={{ backgroundColor: "#2563eb", border: "none" }}
-                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#1d4ed8"}
-                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "#2563eb"}
                 >
                   Iniciar Sesión
                 </Button>

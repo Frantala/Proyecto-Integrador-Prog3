@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { ThemeContext } from "../../../context/ThemeContext";
+import { AuthContext } from "../../../context/AuthContext";
 
 function Login() {
   const { theme } = useContext(ThemeContext);
@@ -15,6 +16,42 @@ function Login() {
 
   const validarCampoEnTiempoReal = (name, value) => {
     let errorMensaje = "";
+
+  const { login } = useContext(AuthContext);
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError(null);
+
+        try {
+            // 2. Hacemos el fetch a tu backend
+            const response = await fetch('http://localhost:3000/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                // Si el backend responde con un error (ej: contraseña incorrecta)
+                throw new Error(data.message || 'Error al iniciar sesión');
+            }
+
+            
+            // Tu backend debería devolver el token en una propiedad (ej: data.token)
+            login(data.token);
+
+            // 4. Redirigimos al usuario a la página de inicio
+            navigate('/inicio');
+
+        } catch (err) {
+            setError(err.message);
+        }
+    };
     
     if (value.trim() === "") {
       setErrors(prev => ({ ...prev, [name]: undefined }));

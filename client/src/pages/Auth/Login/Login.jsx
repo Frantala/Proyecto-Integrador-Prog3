@@ -122,7 +122,8 @@ function Login() {
                     placeholder="Ingresa tu nombre de usuario"
                     isInvalid={!!errors.username}
                     isValid={formData.username && !errors.username}
-                    className={theme === "light" ? "" : "bg-secondary text-white"}
+                    className={theme === "light" ? "" : "bg-secondary"}
+                    style={theme === "light" ? {} : { color: "#020202" }}
                   />
                   <Form.Control.Feedback type="invalid">{errors.username}</Form.Control.Feedback>
                 </Form.Group>
@@ -140,7 +141,8 @@ function Login() {
                     placeholder="ejemplo@email.com"
                     isInvalid={!!errors.email}
                     isValid={formData.email && !errors.email}
-                    className={theme === "light" ? "" : "bg-secondary text-white"}
+                    className={theme === "light" ? "" : "bg-secondary"}
+                    style={theme === "light" ? {} : { color: "#020202" }}
                   />
                   <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
                 </Form.Group>
@@ -158,7 +160,8 @@ function Login() {
                     placeholder="Ingresa tu contraseña"
                     isInvalid={!!errors.password}
                     isValid={formData.password && !errors.password}
-                    className={theme === "light" ? "" : "bg-secondary text-white"}
+                    className={theme === "light" ? "" : "bg-secondary"}
+                    style={theme === "light" ? {} : { color: "#020202" }}
                   />
                   <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
                 </Form.Group>

@@ -112,7 +112,8 @@ function Register() {
                     required
                     isInvalid={!!errors.username}
                     isValid={formData.username && !errors.username}
-                    className={theme === "light" ? "" : "bg-secondary text-white placeholder-light"}
+                    className={theme === "light" ? "" : "bg-secondary"}
+                    style={theme === "light" ? {} : { color: "#020202" }}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.username}
@@ -130,7 +131,8 @@ function Register() {
                     required
                     isInvalid={!!errors.email}
                     isValid={formData.email && !errors.email}
-                    className={theme === "light" ? "" : "bg-secondary text-white placeholder-light"}
+                    className={theme === "light" ? "" : "bg-secondary"}
+                    style={theme === "light" ? {} : { color: "#020202" }}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.email}
@@ -148,7 +150,8 @@ function Register() {
                     required
                     isInvalid={!!errors.password}
                     isValid={formData.password && !errors.password}
-                    className={theme === "light" ? "" : "bg-secondary text-white placeholder-light"}
+                    className={theme === "light" ? "" : "bg-secondary"}
+                    style={theme === "light" ? {} : { color: "#020202" }}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.password}
@@ -166,7 +169,8 @@ function Register() {
                     required
                     isInvalid={!!errors.confirmPassword}
                     isValid={formData.confirmPassword && !errors.confirmPassword}
-                    className={theme === "light" ? "" : "bg-secondary text-white placeholder-light"}
+                    className={theme === "light" ? "" : "bg-secondary"}
+                    style={theme === "light" ? {} : { color: "#020202" }}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.confirmPassword}

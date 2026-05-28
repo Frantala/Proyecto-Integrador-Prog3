@@ -109,7 +109,8 @@ function AdminPanel() {
                     onChange={handleChange}
                     isInvalid={!!errors.nombre}
                     isValid={formData.nombre && !errors.nombre}
-                    className={theme === "light" ? "" : "bg-secondary text-white"}
+                    className={theme === "light" ? "" : "bg-secondary"}
+                    style={theme === "light" ? {} : { color: "#020202" }}
                   />
                   <Form.Control.Feedback type="invalid">{errors.nombre}</Form.Control.Feedback>
                 </Form.Group>
@@ -125,7 +126,8 @@ function AdminPanel() {
                     onChange={handleChange}
                     isInvalid={!!errors.marca}
                     isValid={formData.marca && !errors.marca}
-                    className={theme === "light" ? "" : "bg-secondary text-white"}
+                    className={theme === "light" ? "" : "bg-secondary"}
+                    style={theme === "light" ? {} : { color: "#020202" }}
                   />
                   <Form.Control.Feedback type="invalid">{errors.marca}</Form.Control.Feedback>
                 </Form.Group>
@@ -143,7 +145,8 @@ function AdminPanel() {
                         onChange={handleChange}
                         isInvalid={!!errors.precio}
                         isValid={formData.precio && !errors.precio}
-                        className={theme === "light" ? "" : "bg-secondary text-white"}
+                        className={theme === "light" ? "" : "bg-secondary"}
+                        style={theme === "light" ? {} : { color: "#020202" }}
                       />
                       <Form.Control.Feedback type="invalid">{errors.precio}</Form.Control.Feedback>
                     </Form.Group>
@@ -160,7 +163,8 @@ function AdminPanel() {
                         onChange={handleChange}
                         isInvalid={!!errors.stock}
                         isValid={formData.stock && !errors.stock}
-                        className={theme === "light" ? "" : "bg-secondary text-white"}
+                        className={theme === "light" ? "" : "bg-secondary"}
+                        style={theme === "light" ? {} : { color: "#020202" }}
                       />
                       <Form.Control.Feedback type="invalid">{errors.stock}</Form.Control.Feedback>
                     </Form.Group>
@@ -178,7 +182,8 @@ function AdminPanel() {
                     onChange={handleChange}
                     isInvalid={!!errors.imagenUrl}
                     isValid={formData.imagenUrl && !errors.imagenUrl}
-                    className={theme === "light" ? "" : "bg-secondary text-white"}
+                    className={theme === "light" ? "" : "bg-secondary"}
+                    style={theme === "light" ? {} : { color: "#020202" }}
                   />
                   <Form.Control.Feedback type="invalid">{errors.imagenUrl}</Form.Control.Feedback>
                 </Form.Group>

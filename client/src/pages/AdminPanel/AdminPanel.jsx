@@ -64,7 +64,6 @@ function AdminPanel() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Validar todos los campos antes de enviar
     validarCampoEnTiempoReal("nombre", formData.nombre);
     validarCampoEnTiempoReal("marca", formData.marca);
     validarCampoEnTiempoReal("precio", formData.precio);
@@ -88,9 +87,9 @@ function AdminPanel() {
   };
 
   return (
-    <Container className="py-5">
-      <Row className="justify-content-center">
-        <Col md={8}>
+    <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
+      <Row className="w-100">
+        <Col md={{ span: 8, offset: 2 }}>
           <Card className={`shadow-lg border-0 ${theme === "light" ? "" : "bg-dark"}`}>
             <Card.Header style={{ backgroundColor: theme === "light" ? "#c1f0f6" : "#1a1a1a" }}>
               <h2 className={`fw-bold text-center mb-0 ${theme === "light" ? "text-dark" : "text-white"}`}>
@@ -188,6 +187,8 @@ function AdminPanel() {
                   type="submit"
                   className="w-100 fw-semibold"
                   style={{ backgroundColor: "#2563eb", border: "none" }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#1d4ed8"}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "#2563eb"}
                 >
                   Agregar Producto
                 </Button>

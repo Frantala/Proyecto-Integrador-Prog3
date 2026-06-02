@@ -75,19 +75,21 @@ function Login() {
     if (tieneErrores || camposVacios) return;
 
     try {
-      const response = await fetch("http://localhost:3000/login", {
+      const response = await fetch("http://localhost:3000/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: formData.email, password: formData.password })
       });
 
-      const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Error al iniciar sesión");
+        const errorText = await response.text();
+
+        throw new Error(errorText || `Error del servidor (Código ${response.status})`);
       }
 
       // Guardar token en AuthContext
+      const data = await response.json();
       login(data.token);
 
       // Redirigir al inicio

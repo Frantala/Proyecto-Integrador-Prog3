@@ -38,28 +38,33 @@ export const loginUser = async (req, res) => {
 
     try {
         const user = await User.findOne({
-            where: {
-                email
-            }
+            where: { email }
         });
 
         if (!user)
-            return res.status(400).send({ message: "Usuario no encontrado" });
+            return res.status(400).json({ message: "Usuario no encontrado" }); // Cambiado a .json por buena práctica
 
-        const comparasion = await bcrypt.compare(password, user.password);
+        
+        const comparacion = await bcrypt.compare(password, user.password);
 
         if (!comparacion)
-            return res.status(400).send({ message: "Email y/o contraseña incorrecta" });
+            return res.status(400).json({ message: "Email y/o contraseña incorrecta" });
 
-        // extraemos el id y el role  del usuario de la base de datos
-        const {id, role } = user;
-        // generate token
+        // Extraemos el id y el role del usuario de la base de datos
+        const { id, role } = user;
+        
+        // Generate token
         const secretKey = 'proyecto-2026';
+        const token = jwt.sign({ id, email, role }, secretKey, { expiresIn: '1h' });
 
-        const token = jwt.sign({ id,email, role }, secretKey, { expiresIn: '1h' });
+        return res.status(200).json({ 
+            message: "Login exitoso",
+            token: token 
+        });
 
-        return res.json(token);
     } catch (error) {
-        res.status(500).send({ message: "Error al iniciar sesión", error });
+        //Enviamos error.message para que Express no mande una respuesta vacía
+        console.error("Error en loginUser:", error); // Esto  va a mostrar el error real en la consola de la terminal
+        res.status(500).json({ message: "Error al iniciar sesión", error: error.message });
     }
 }

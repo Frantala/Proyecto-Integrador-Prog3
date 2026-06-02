@@ -3,6 +3,7 @@ import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { ThemeContext } from "../../../context/ThemeContext";
 import { AuthContext } from "../../../context/AuthContext";
+import Toast from 'react-bootstrap/Toast';
 
 function Login() {
   const { theme } = useContext(ThemeContext);
@@ -16,7 +17,9 @@ function Login() {
   });
 
   const [errors, setErrors] = useState({});
-  const [error, setError] = useState(null);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState("success"); // "success" o "error"
 
   const validarCampoEnTiempoReal = (name, value) => {
     let errorMensaje = "";
@@ -62,7 +65,6 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null);
 
     // Validar antes de enviar
     validarCampoEnTiempoReal("username", formData.username);
@@ -81,21 +83,26 @@ function Login() {
         body: JSON.stringify({ email: formData.email, password: formData.password })
       });
 
-
       if (!response.ok) {
-        const errorText = await response.text();
-
-        throw new Error(errorText || `Error del servidor (Código ${response.status})`);
+        const errorData = await response.json();
+        throw new Error(errorData.message || `Error del servidor (Código ${response.status})`);
       }
 
-      // Guardar token en AuthContext
       const data = await response.json();
       login(data.token);
+
+      // Toast de éxito
+      setToastType("success");
+      setToastMessage("Inicio de sesión exitoso");
+      setShowToast(true);
 
       // Redirigir al inicio
       navigate("/inicio");
     } catch (err) {
-      setError(err.message);
+      // Toast de error
+      setToastType("error");
+      setToastMessage(err.message); // ahora solo "usuario no encontrado"
+      setShowToast(true);
     }
   };
 
@@ -168,8 +175,6 @@ function Login() {
                   <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
                 </Form.Group>
 
-                {error && <p className="text-danger fw-semibold">{error}</p>}
-
                 <Button
                   type="submit"
                   className="w-100 fw-semibold"
@@ -187,6 +192,22 @@ function Login() {
                   Regístrate
                 </Link>
               </div>
+
+              <Toast
+                bg={toastType === "error" ? "danger" : "success"}
+                onClose={() => setShowToast(false)}
+                show={showToast}
+                delay={5000}
+                autohide
+                className="mt-3"
+              >
+                <Toast.Header>
+                  <strong className="me-auto">
+                    {toastType === "error" ? "Error" : "Éxito"}
+                  </strong>
+                </Toast.Header>
+                <Toast.Body className="text-white">{toastMessage}</Toast.Body>
+              </Toast>
             </Card.Body>
           </Card>
         </Col>

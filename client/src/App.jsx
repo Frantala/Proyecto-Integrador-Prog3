@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 import { ThemeContext } from './context/ThemeContext.jsx';
 import { Container, Row, Col } from 'react-bootstrap';
+import { AuthContext } from './context/AuthContext.jsx';
 import './App.css';
 import './index.css';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -18,6 +19,8 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [cart, setCart] = useState([]);
   const [mensaje, setMensaje] = useState("");
+  const { token } = useContext(AuthContext); 
+  const { theme } = useContext(ThemeContext);
 
   const addToCart = (product) => {
     setCart((prevCart) => {
@@ -73,8 +76,6 @@ function App() {
 
     fetchGorras();
   }, []);
-
-  const { theme } = useContext(ThemeContext);
 
   return (
     <Router>
@@ -148,6 +149,7 @@ function App() {
                 setCart={setCart}
                 updateQuantity={updateQuantity}
                 removeFromCart={removeFromCart}
+                token={token}
               />
             } />
             <Route path="/admin" element={<AdminPanel />} />

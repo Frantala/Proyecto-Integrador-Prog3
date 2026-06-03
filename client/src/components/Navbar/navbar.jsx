@@ -1,12 +1,21 @@
 import { useContext } from "react";
 import { Navbar as BootstrapNavbar, Container, Nav } from "react-bootstrap";
 import { ThemeContext } from "../../context/ThemeContext";
-import { Link } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext"; 
+import { Link, useNavigate } from "react-router-dom"; 
 import logo from "../../assets/logo-hustlery.png";
 import "./Navbar.css";
 
 const CustomNavbar = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
+  const { token, logout } = useContext(AuthContext); 
+  const navigate = useNavigate(); 
+
+  // Función para manejar el clic en cerrar sesión
+  const handleLogout = () => {
+    logout();
+    navigate("/login"); // Lo mandamos de vuelta al login al salir
+  };
 
   return (
     <BootstrapNavbar
@@ -17,7 +26,6 @@ const CustomNavbar = () => {
       sticky="top"
     >
       <Container fluid>
-        {/* Brand */}
         <BootstrapNavbar.Brand as={Link} to="/" className="brand-custom d-flex align-items-center">
           <img
             src={logo}
@@ -32,18 +40,34 @@ const CustomNavbar = () => {
 
         {/* Contenedor colapsable */}
         <BootstrapNavbar.Collapse id="basic-navbar-nav" className="navbar-collapse-custom">
-          {/* Links - Centered */}
           <Nav className="nav-links fw-medium">
             <Nav.Link as={Link} to="/">Inicio</Nav.Link>
             <Nav.Link as={Link} to="/about-us">Sobre Nosotros</Nav.Link>
-            {/* ✅ Nuevo link al AdminPanel */}
             <Nav.Link as={Link} to="/admin">Admin</Nav.Link>
           </Nav>
 
-          {/* Icons - Right */}
           <Nav className="nav-icons align-items-center">
             <Nav.Link as={Link} to="/cart">🛒</Nav.Link>
-            <Nav.Link as={Link} to="/login">👤</Nav.Link>
+            
+            
+            {token ? (
+              <Nav.Link 
+                onClick={handleLogout} 
+                style={{ cursor: "pointer" }} 
+                title="Cerrar Sesión"
+              >
+                🚪
+              </Nav.Link>
+            ) : (
+              <Nav.Link 
+                as={Link} 
+                to="/login" 
+                title="Iniciar Sesión"
+              >
+                👤
+              </Nav.Link>
+            )}
+
             <Nav.Link onClick={toggleTheme} style={{ cursor: "pointer" }}>
               {theme === "light" ? "🌘" : "☀️"}
             </Nav.Link>

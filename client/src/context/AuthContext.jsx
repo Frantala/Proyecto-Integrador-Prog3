@@ -1,37 +1,34 @@
-import { createContext, useState, useEffect } from 'react';
-import { jwtDecode } from 'jwt-decode'; // Importamos la librería que decodifica
+import { createContext, useState } from "react";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
+  const [token, setToken] = useState(localStorage.getItem("token") || null);
+  // Intentamos cargar el usuario guardado (si existe)
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem("user");
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
 
-    useEffect(() => {
-        // 1. Buscamos el token en el localStorage
-        const token = localStorage.getItem('token');
+  // Ahora el login recibe el token y los datos del usuario que manda el backend
+  const login = (userToken, userData) => {
+    localStorage.setItem("token", userToken);
+    localStorage.setItem("user", JSON.stringify(userData));
+    setToken(userToken);
+    setUser(userData);
+  };
 
-        if (token) {
-            try {
-                // 2. Si hay token, lo decodificamos para ver el { id, email, role }
-                const decodedUser = jwtDecode(token);
-                
-                // 3. Guardamos esos datos en el estado global
-                setUser(decodedUser);
-            } catch (error) {
-                console.error("Error al decodificar el token:", error);
-                // Si el token es inválido o fue modificado, lo borramos por seguridad
-                localStorage.removeItem('token');
-            }
-        }
-        
-        // 4. Avisamos que ya terminamos de cargar, haya o no haya usuario
-        setIsLoading(false);
-    }, []); // <- ¡Acá está tu array vacío!
+  // Funcion de cerrar sesion
+  const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setToken(null);
+    setUser(null);
+  };
 
-    return (
-        <AuthContext.Provider value={{ user, isLoading }}>
-            {children}
-        </AuthContext.Provider>
-    );
+  return (
+    <AuthContext.Provider value={{ token, user, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };

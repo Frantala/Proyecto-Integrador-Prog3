@@ -1,13 +1,12 @@
 import { useState, useContext } from "react";
-import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
+import { Container, Row, Col, Form, Button, Card, Toast, ToastContainer } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { ThemeContext } from "../../../context/ThemeContext";
 import { AuthContext } from "../../../context/AuthContext";
-import Toast from 'react-bootstrap/Toast';
 
 function Login() {
   const { theme } = useContext(ThemeContext);
-  const { login } = useContext(AuthContext);
+  const { login } = useContext(AuthContext); 
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -19,7 +18,7 @@ function Login() {
   const [errors, setErrors] = useState({});
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
-  const [toastType, setToastType] = useState("success"); // "success" o "error"
+  const [toastType, setToastType] = useState("success");
 
   const validarCampoEnTiempoReal = (name, value) => {
     let errorMensaje = "";
@@ -66,20 +65,26 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validar antes de enviar
     validarCampoEnTiempoReal("username", formData.username);
     validarCampoEnTiempoReal("email", formData.email);
     validarCampoEnTiempoReal("password", formData.password);
 
     const tieneErrores = Object.values(errors).some(error => error !== undefined);
+    
     const camposVacios = !formData.username || !formData.email || !formData.password;
 
-    if (tieneErrores || camposVacios) return;
+    if (tieneErrores || camposVacios) {
+      setToastType("error");
+      setToastMessage("Por favor, completa todos los campos correctamente.");
+      setShowToast(true);
+      return;
+    }
 
     try {
       const response = await fetch("http://localhost:3000/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        // Enviamos email y password al backend (que son las credenciales que tu API valida)
         body: JSON.stringify({ email: formData.email, password: formData.password })
       });
 
@@ -89,25 +94,41 @@ function Login() {
       }
 
       const data = await response.json();
-      login(data.token);
 
-      // Toast de éxito
+      if (typeof login === "function") {
+        login(data.token);
+      } else {
+        console.warn("Alerta: La función 'login' no se encontró en AuthContext. Revisa tu Provider.");
+      }
+
       setToastType("success");
-      setToastMessage("Inicio de sesión exitoso");
+      setToastMessage("¡Inicio de sesión exitoso! Redirigiendo...");
       setShowToast(true);
 
-      // Redirigir al inicio
-      navigate("/inicio");
+      setTimeout(() => {
+        navigate("/");
+      }, 1200);
+
     } catch (err) {
-      // Toast de error
       setToastType("error");
-      setToastMessage(err.message); // ahora solo "usuario no encontrado"
+      setToastMessage(err.message);
       setShowToast(true);
     }
   };
 
   return (
     <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
+      
+      
+      <ToastContainer position="top-end" className="p-3" style={{ zIndex: 9999 }}>
+        <Toast onClose={() => setShowToast(false)} show={showToast} delay={4000} autohide bg={toastType === "success" ? "success" : "danger"}>
+          <Toast.Header closeButton={false}>
+            <strong className="me-auto">{toastType === "success" ? "Éxito" : "Error"}</strong>
+          </Toast.Header>
+          <Toast.Body className="text-white">{toastMessage}</Toast.Body>
+        </Toast>
+      </ToastContainer>
+
       <Row className="w-100">
         <Col md={{ span: 6, offset: 3 }}>
           <Card className={`shadow-lg border-0 ${theme === "light" ? "" : "bg-dark"}`}>
@@ -118,7 +139,7 @@ function Login() {
             </Card.Header>
             <Card.Body style={{ backgroundColor: theme === "light" ? "#e0f7fa" : "#212529" }}>
               <Form noValidate onSubmit={handleSubmit}>
-                {/* Username */}
+                
                 <Form.Group className="mb-3" controlId="username">
                   <Form.Label className={`fw-semibold ${theme === "light" ? "text-dark" : "text-white"}`}>
                     Nombre de Usuario
@@ -137,7 +158,6 @@ function Login() {
                   <Form.Control.Feedback type="invalid">{errors.username}</Form.Control.Feedback>
                 </Form.Group>
 
-                {/* Email */}
                 <Form.Group className="mb-3" controlId="email">
                   <Form.Label className={`fw-semibold ${theme === "light" ? "text-dark" : "text-white"}`}>
                     Email
@@ -156,7 +176,6 @@ function Login() {
                   <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
                 </Form.Group>
 
-                {/* Password */}
                 <Form.Group className="mb-4" controlId="password">
                   <Form.Label className={`fw-semibold ${theme === "light" ? "text-dark" : "text-white"}`}>
                     Contraseña
@@ -193,21 +212,6 @@ function Login() {
                 </Link>
               </div>
 
-              <Toast
-                bg={toastType === "error" ? "danger" : "success"}
-                onClose={() => setShowToast(false)}
-                show={showToast}
-                delay={5000}
-                autohide
-                className="mt-3"
-              >
-                <Toast.Header>
-                  <strong className="me-auto">
-                    {toastType === "error" ? "Error" : "Éxito"}
-                  </strong>
-                </Toast.Header>
-                <Toast.Body className="text-white">{toastMessage}</Toast.Body>
-              </Toast>
             </Card.Body>
           </Card>
         </Col>

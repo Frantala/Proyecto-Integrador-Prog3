@@ -1,12 +1,18 @@
 import { useState, useContext } from "react";
-import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Container, Row, Col, Form, Button, Card, Toast, ToastContainer } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom"; 
 import { ThemeContext } from "../../../context/ThemeContext";
 
 function Register() {
+  const navigate = useNavigate();
+
+  const [showToast, setShowToast] = useState(false);
+  const [toastType, setToastType] = useState("success");
+  const [toastMessage, setToastMessage] = useState("");
+
   const { theme } = useContext(ThemeContext);
   const [formData, setFormData] = useState({
-    username: "",
+    name: "", 
     email: "",
     password: "",
     confirmPassword: ""
@@ -17,7 +23,7 @@ function Register() {
   const validarCampo = (name, value) => {
     let errorMensaje = "";
 
-    if (name === "username" && value.trim().length > 0 && value.length < 4) {
+    if (name === "name" && value.trim().length > 0 && value.length < 4) {
       errorMensaje = "Debe tener al menos 4 caracteres";
     }
 
@@ -55,8 +61,8 @@ function Register() {
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.username || formData.username.length < 4) {
-      newErrors.username = "Debe tener al menos 4 caracteres";
+    if (!formData.name || formData.name.trim().length < 4) {
+      newErrors.name = "Debe tener al menos 4 caracteres";
     }
 
     if (!formData.email || formData.email.trim().length === 0) {
@@ -79,44 +85,98 @@ function Register() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      console.log("Register attempt:", formData);
-      alert("Funcionalidad de registro en desarrollo");
+    
+    if (!validateForm()) {
+      setToastType("error");
+      setToastMessage("Por favor, revisa los errores del formulario.");
+      setShowToast(true);
+      return; 
+    }
+
+    try {
+      const response = await fetch("http://localhost:3000/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          name: formData.name, 
+          email: formData.email, 
+          password: formData.password 
+        })
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text(); 
+        let errorMessage = `Error del servidor (Código ${response.status})`;
+        
+        try {
+          const errorData = JSON.parse(errorText);
+          errorMessage = errorData.message || errorMessage;
+        } catch (e) {
+          if (errorText) errorMessage = errorText; 
+        }
+
+        throw new Error(errorMessage);
+      }
+
+      await response.json();
+
+      setToastType("success");
+      setToastMessage("¡Registro completado con éxito! Ya podés ingresar");
+      setShowToast(true);
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 1500);
+
+    } catch (err) {
+      setToastType("error");
+      setToastMessage(err.message);
+      setShowToast(true);
     }
   };
 
   return (
     <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
+      {}
+      <ToastContainer position="top-end" className="p-3" style={{ zIndex: 9999 }}>
+        <Toast onClose={() => setShowToast(false)} show={showToast} delay={4000} autohide bg={toastType === "success" ? "success" : "danger"}>
+          <Toast.Header closeButton={false}>
+            <strong className="me-auto">{toastType === "success" ? "Éxito" : "Error"}</strong>
+          </Toast.Header>
+          <Toast.Body className="text-white">{toastMessage}</Toast.Body>
+        </Toast>
+      </ToastContainer>
+
       <Row className="w-100">
         <Col md={{ span: 6, offset: 3 }}>
           <Card className={`shadow-lg border-0 ${theme === "light" ? "" : "bg-dark"}`}>
             
-            {/* Encabezado adaptable */}
             <Card.Header style={{ backgroundColor: theme === "light" ? "#c1f0f6" : "#1a1a1a" }}>
               <h2 className={`fw-bold text-center mb-0 ${theme === "light" ? "text-dark" : "text-white"}`}>Crear una nueva cuenta</h2>
             </Card.Header>
             
-            {/* Cuerpo de tarjeta adaptable */}
             <Card.Body style={{ backgroundColor: theme === "light" ? "#e0f7fa" : "#212529" }}>
               <Form noValidate onSubmit={handleSubmit}>
-                <Form.Group className="mb-3" controlId="username">
+                
+                {}
+                <Form.Group className="mb-3" controlId="name">
                   <Form.Label className={`fw-semibold ${theme === "light" ? "text-dark" : "text-white"}`}>Nombre de Usuario</Form.Label>
                   <Form.Control
                     type="text"
-                    name="username"
-                    value={formData.username}
+                    name="name" 
+                    value={formData.name}
                     onChange={handleChange}
                     placeholder="Ingresa tu nombre de usuario"
                     required
-                    isInvalid={!!errors.username}
-                    isValid={formData.username && !errors.username}
+                    isInvalid={!!errors.name}
+                    isValid={formData.name && !errors.name}
                     className={theme === "light" ? "" : "bg-secondary"}
                     style={theme === "light" ? {} : { color: "#020202" }}
                   />
                   <Form.Control.Feedback type="invalid">
-                    {errors.username}
+                    {errors.name}
                   </Form.Control.Feedback>
                 </Form.Group>
 

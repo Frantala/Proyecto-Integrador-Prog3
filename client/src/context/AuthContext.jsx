@@ -7,7 +7,17 @@ export const AuthProvider = ({ children }) => {
   // Intentamos cargar el usuario guardado (si existe)
   const [user, setUser] = useState(() => {
     const savedUser = localStorage.getItem("user");
-    return savedUser ? JSON.parse(savedUser) : null;
+    if (!savedUser || savedUser === "undefined") {
+      localStorage.removeItem("user"); // Limpiar valor inválido
+      return null;
+    }
+    try {
+      return JSON.parse(savedUser);
+    } catch (error) {
+      console.error("Error parsing saved user:", error);
+      localStorage.removeItem("user"); // Limpiar si no es JSON válido
+      return null;
+    }
   });
 
   // Ahora el login recibe el token y los datos del usuario que manda el backend

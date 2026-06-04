@@ -13,6 +13,7 @@ import Login from './pages/Auth/Login/Login.jsx';
 import Cart from './pages/Cart/Cart.jsx'; 
 import Register from './pages/Auth/Register/Register.jsx';
 import AdminPanel from './pages/AdminPanel/AdminPanel.jsx';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute.jsx';
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -152,7 +153,11 @@ function App() {
                 token={token}
               />
             } />
-            <Route path="/admin" element={<AdminPanel />} />
+            <Route path="/admin" element={
+              <ProtectedRoute>
+                <AdminPanel />
+              </ProtectedRoute>
+            } />
           </Routes>
         </div>
 

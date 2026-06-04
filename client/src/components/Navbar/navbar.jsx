@@ -8,8 +8,10 @@ import "./Navbar.css";
 
 const CustomNavbar = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
-  const { token, logout } = useContext(AuthContext); 
+  const { token, user, logout } = useContext(AuthContext); 
   const navigate = useNavigate(); 
+
+  const isAdmin = user && (user.role === "admin" || user.role === "superadmin" || user.role === "super-admin");
 
   // Función para manejar el clic en cerrar sesión
   const handleLogout = () => {

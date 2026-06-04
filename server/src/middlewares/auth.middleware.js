@@ -17,7 +17,7 @@ export const isAdmin = (req, res, next) => {
         const decoded = jwt.verify(token, secretKey);
 
         //verificamos si el rol guardado cumple con los privilegios
-        if(decoded.role === "admin" || decoded.role === "superadmin") {
+        if(decoded.role === "admin" || decoded.role === "super-admin") {
             req.usuario = decoded;
             next();
         }

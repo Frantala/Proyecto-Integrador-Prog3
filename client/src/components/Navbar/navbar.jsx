@@ -45,7 +45,7 @@ const CustomNavbar = () => {
           <Nav className="nav-links fw-medium">
             <Nav.Link as={Link} to="/">Inicio</Nav.Link>
             <Nav.Link as={Link} to="/about-us">Sobre Nosotros</Nav.Link>
-            <Nav.Link as={Link} to="/admin">Admin</Nav.Link>
+            {isAdmin && <Nav.Link as={Link} to="/admin">Admin</Nav.Link>}
           </Nav>
 
           <Nav className="nav-icons align-items-center">

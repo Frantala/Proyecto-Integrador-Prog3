@@ -96,7 +96,7 @@ function Login() {
       const data = await response.json();
 
       if (typeof login === "function") {
-        login(data.token);
+        login(data.token, data.user);
       } else {
         console.warn("Alerta: La función 'login' no se encontró en AuthContext. Revisa tu Provider.");
       }

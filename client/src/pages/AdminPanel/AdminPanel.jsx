@@ -1,9 +1,19 @@
-import { useState, useContext } from "react";
-import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
+import { useState, useContext, useEffect } from "react";
+import { Container, Row, Col, Form, Button, Card, Toast, ToastContainer, Spinner } from "react-bootstrap";
 import { ThemeContext } from "../../context/ThemeContext";
+import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function AdminPanel() {
   const { theme } = useContext(ThemeContext);
+  const { token, user } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const [isAuthorized, setIsAuthorized] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState("success");
 
   const [formData, setFormData] = useState({
     nombre: "",
@@ -14,6 +24,37 @@ function AdminPanel() {
   });
 
   const [errors, setErrors] = useState({});
+
+  // Verificar si el usuario es admin al cargar el componente
+  useEffect(() => {
+    if (!token || !user) {
+      navigate("/login");
+      return;
+    }
+
+    const isAdmin = user.role === "admin" || user.role === "superadmin" || user.role === "super-admin";
+    if (!isAdmin) {
+      navigate("/");
+      return;
+    }
+
+    setIsAuthorized(true);
+    setLoading(false);
+  }, [token, user, navigate]);
+
+  if (loading) {
+    return (
+      <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Cargando...</span>
+        </Spinner>
+      </Container>
+    );
+  }
+
+  if (!isAuthorized) {
+    return null;
+  }
 
   const validarCampoEnTiempoReal = (name, value) => {
     let errorMensaje = "";
@@ -61,7 +102,7 @@ function AdminPanel() {
     validarCampoEnTiempoReal(name, value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     validarCampoEnTiempoReal("nombre", formData.nombre);
@@ -73,9 +114,32 @@ function AdminPanel() {
     const tieneErrores = Object.values(errors).some(error => error !== undefined);
     const camposVacios = !formData.nombre || !formData.marca || !formData.precio || !formData.stock || !formData.imagenUrl;
 
-    if (!tieneErrores && !camposVacios) {
-      console.log("Producto listo para enviar:", formData);
-      alert("Validación correcta. Backend se implementará a futuro.");
+    if (tieneErrores || camposVacios) {
+      setToastType("error");
+      setToastMessage("Por favor, completa todos los campos correctamente.");
+      setShowToast(true);
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:3000/api/crear", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": token
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Error al crear el producto");
+      }
+
+      setToastType("success");
+      setToastMessage("¡Producto creado correctamente!");
+      setShowToast(true);
+
       setFormData({
         nombre: "",
         marca: "",
@@ -83,11 +147,25 @@ function AdminPanel() {
         stock: "",
         imagenUrl: ""
       });
+
+    } catch (error) {
+      setToastType("error");
+      setToastMessage(error.message);
+      setShowToast(true);
     }
   };
 
   return (
     <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
+      <ToastContainer position="top-end" className="p-3" style={{ zIndex: 9999 }}>
+        <Toast onClose={() => setShowToast(false)} show={showToast} delay={4000} autohide bg={toastType === "success" ? "success" : "danger"}>
+          <Toast.Header closeButton={false}>
+            <strong className="me-auto">{toastType === "success" ? "Éxito" : "Error"}</strong>
+          </Toast.Header>
+          <Toast.Body className="text-white">{toastMessage}</Toast.Body>
+        </Toast>
+      </ToastContainer>
+
       <Row className="w-100">
         <Col md={{ span: 8, offset: 2 }}>
           <Card className={`shadow-lg border-0 ${theme === "light" ? "" : "bg-dark"}`}>

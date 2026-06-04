@@ -20,8 +20,86 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [cart, setCart] = useState([]);
   const [mensaje, setMensaje] = useState("");
-  const { token } = useContext(AuthContext); 
+  const { token, user } = useContext(AuthContext); 
   const { theme } = useContext(ThemeContext);
+  const isAdmin = user?.role === "admin" || user?.role === "super-admin";
+
+  const handleDeleteProduct = async (id) => {
+    if (!token) return;
+
+    try {
+      const response = await fetch(`http://localhost:3000/api/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token
+        }
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Error al eliminar producto");
+      }
+
+      setProducts((prev) => prev.filter((product) => product.id !== id));
+      setMensaje("Producto eliminado correctamente.");
+      setTimeout(() => setMensaje(""), 2000);
+    } catch (error) {
+      console.error(error);
+      setMensaje(error.message);
+      setTimeout(() => setMensaje(""), 3000);
+    }
+  };
+
+  const handleUpdateProduct = async (updatedProduct) => {
+    if (!token) return;
+
+    try {
+      const body = {
+        nombre: updatedProduct.name,
+        marca: updatedProduct.category,
+        precio: updatedProduct.price,
+        stock: updatedProduct.stock,
+        imagenUrl: updatedProduct.image
+      };
+
+      const response = await fetch(`http://localhost:3000/api/${updatedProduct.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token
+        },
+        body: JSON.stringify(body)
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Error al actualizar producto");
+      }
+
+      const data = await response.json();
+      const updated = data.producto;
+
+      setProducts((prev) => prev.map((product) =>
+        product.id === updated.id
+          ? {
+              ...product,
+              name: updated.nombre,
+              category: updated.marca,
+              price: updated.precio,
+              stock: updated.stock,
+              image: updated.imagenUrl
+            }
+          : product
+      ));
+      setMensaje("Producto actualizado correctamente.");
+      setTimeout(() => setMensaje(""), 2000);
+    } catch (error) {
+      console.error(error);
+      setMensaje(error.message);
+      setTimeout(() => setMensaje(""), 3000);
+    }
+  };
 
   const addToCart = (product) => {
     setCart((prevCart) => {
@@ -133,6 +211,9 @@ function App() {
                               category: p.marca
                             }}
                             addToCart={addToCart}
+                            isAdmin={isAdmin}
+                            onDelete={handleDeleteProduct}
+                            onUpdate={handleUpdateProduct}
                           />
                         </Col>
                       ))}

@@ -1,7 +1,7 @@
 // aqui se declararan las rutas para las gorras 
 
 import { Router } from 'express';
-import { getProducts, seedProducts } from "../controllers/product.controller.js";
+import { getProducts, seedProducts, updateProduct, deleteProduct } from "../controllers/product.controller.js";
 import { verificarToken } from "../middlewares/verificarToken.js";
 import { verificarRol } from "../middlewares/roleMiddleware.js";
 
@@ -12,13 +12,9 @@ gorrasRouter.get("/inicio", getProducts);
 
 // RUTAS PROTEGIDAS: Solo para administradores
 
-// 1. Crear producto: Requiere estar logueado Y ser admin
-gorrasRouter.post("/crear", verificarToken, verificarRol(["admin", "super-admin"]), seedProducts);
+gorrasRouter.post("/seed", verificarToken, verificarRol(["admin", "super-admin"]), seedProducts); // Datos de prueba sólo para admin
 
-// 2. Actualizar producto: Solo admin
-gorrasRouter.put("/:id", verificarToken, verificarRol(["admin", "super-admin"]), seedProducts);
-
-// 3. Eliminar producto: Solo super-admin
-gorrasRouter.delete("/:id", verificarToken, verificarRol(["super-admin"]), seedProducts);
+gorrasRouter.put("/:id", verificarToken, verificarRol(["admin", "super-admin"]), updateProduct);
+gorrasRouter.delete("/:id", verificarToken, verificarRol(["admin", "super-admin"]), deleteProduct);
 
 export default gorrasRouter;

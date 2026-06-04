@@ -98,3 +98,44 @@ export const seedProducts = async (req, res) => {
         });
     }
 };
+
+export const updateProduct = async (req, res) => {
+    const { id } = req.params;
+    const { nombre, marca, precio, stock, imagenUrl } = req.body;
+
+    try {
+        const product = await Product.findByPk(id);
+        if (!product) {
+            return res.status(404).json({ mensaje: "Producto no encontrado" });
+        }
+
+        await product.update({ nombre, marca, precio, stock, imagenUrl });
+        res.json({ mensaje: "Producto actualizado correctamente", producto: product });
+    } catch (error) {
+        console.error("DETALLE DEL ERROR:", error);
+        res.status(500).json({ 
+            mensaje: "Error al actualizar producto", 
+            detalle: error.message 
+        });
+    }
+};
+
+export const deleteProduct = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const product = await Product.findByPk(id);
+        if (!product) {
+            return res.status(404).json({ mensaje: "Producto no encontrado" });
+        }
+
+        await product.destroy();
+        res.json({ mensaje: "Producto eliminado correctamente" });
+    } catch (error) {
+        console.error("DETALLE DEL ERROR:", error);
+        res.status(500).json({ 
+            mensaje: "Error al eliminar producto", 
+            detalle: error.message 
+        });
+    }
+};

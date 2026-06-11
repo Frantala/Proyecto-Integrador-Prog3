@@ -1,7 +1,9 @@
 import { useEffect, useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ThemeContext } from './context/ThemeContext.jsx';
 import { Container, Row, Col } from 'react-bootstrap';
 import { AuthContext } from './context/AuthContext.jsx';
+import { authFetch } from './utils/authFetch.js';
 import './App.css';
 import './index.css';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -20,21 +22,22 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [cart, setCart] = useState([]);
   const [mensaje, setMensaje] = useState("");
-  const { token, user } = useContext(AuthContext); 
+  const { token, user, logout } = useContext(AuthContext); 
   const { theme } = useContext(ThemeContext);
+  const navigate = useNavigate();
   const isAdmin = user?.role === "admin" || user?.role === "super-admin";
 
   const handleDeleteProduct = async (id) => {
     if (!token) return;
 
     try {
-      const response = await fetch(`http://localhost:3000/api/${id}`, {
+      const response = await authFetch(`http://localhost:3000/api/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
           Authorization: token
         }
-      });
+      }, logout, navigate);
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -63,14 +66,14 @@ function App() {
         imagenUrl: updatedProduct.image
       };
 
-      const response = await fetch(`http://localhost:3000/api/${updatedProduct.id}`, {
+      const response = await authFetch(`http://localhost:3000/api/${updatedProduct.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: token
         },
         body: JSON.stringify(body)
-      });
+      }, logout, navigate);
 
       if (!response.ok) {
         const errorData = await response.json();

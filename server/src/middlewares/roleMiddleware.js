@@ -8,7 +8,7 @@ const verificarRol = (rolesPermitidos) => {
     // Comprobamos si el rol asignado al usuario está incluido en los roles autorizados
     if (!rolesPermitidos.includes(req.usuario.role)) {
       return res.status(403).json({ 
-        mensaje:'Acceso denegado. Tu rol (${req.usuario.role}) no tiene permisos para esta acción.' 
+        mensaje: `Acceso denegado. Tu rol (${req.usuario.role}) no tiene permisos para esta acción.` 
       });
     }
 

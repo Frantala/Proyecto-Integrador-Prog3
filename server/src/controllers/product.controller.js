@@ -1,6 +1,6 @@
 import Product from "../models/Product.js";
 
-// Esta función reemplaza lo que tenías dentro del router.get
+
 export const getProducts = async (req, res) => {
     try {
         const listaGorras = await Product.findAll();
@@ -94,6 +94,57 @@ export const seedProducts = async (req, res) => {
         console.error("DETALLE DEL ERROR:", error);
         res.status(500).json({ 
             mensaje: "Error al crear productos de prueba", 
+            detalle: error.message 
+        });
+    }
+};
+
+export const createProduct = async (req, res) => {
+    const { nombre, marca, precio, stock, imagenUrl } = req.body;
+
+    if (!nombre || !marca || precio === undefined || stock === undefined || !imagenUrl) {
+        return res.status(400).json({ mensaje: "Todos los campos son obligatorios" });
+    }
+
+    if (typeof nombre !== 'string' || nombre.trim().length < 3) {
+        return res.status(400).json({ mensaje: "El nombre debe tener al menos 3 caracteres" });
+    }
+
+    if (typeof marca !== 'string' || marca.trim().length < 2) {
+        return res.status(400).json({ mensaje: "La marca debe tener al menos 2 caracteres" });
+    }
+
+    const precioFloat = Number(precio);
+    const stockInt = Number(stock);
+    const imagenUrlString = String(imagenUrl).trim();
+
+    if (!Number.isFinite(precioFloat) || precioFloat <= 0) {
+        return res.status(400).json({ mensaje: "El precio debe ser un número mayor a 0" });
+    }
+
+    if (!Number.isInteger(stockInt) || stockInt < 0) {
+        return res.status(400).json({ mensaje: "El stock debe ser un número entero mayor o igual a 0" });
+    }
+
+    const imagePattern = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))$|^(\/[\w\-.\/]+\.(?:png|jpg|jpeg|gif|webp))$/i;
+    if (!imagePattern.test(imagenUrlString)) {
+        return res.status(400).json({ mensaje: "La imagen debe ser una URL válida de imagen o una ruta relativa válida" });
+    }
+
+    try {
+        const newProduct = await Product.create({
+            nombre: nombre.trim(),
+            marca: marca.trim(),
+            precio: precioFloat,
+            stock: stockInt,
+            imagenUrl: imagenUrlString
+        });
+
+        res.status(201).json({ mensaje: "Producto creado correctamente", producto: newProduct });
+    } catch (error) {
+        console.error("DETALLE DEL ERROR:", error);
+        res.status(500).json({ 
+            mensaje: "Error al crear el producto", 
             detalle: error.message 
         });
     }

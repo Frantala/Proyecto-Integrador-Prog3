@@ -3,10 +3,11 @@ import { Container, Row, Col, Form, Button, Card, Toast, ToastContainer, Spinner
 import { ThemeContext } from "../../context/ThemeContext";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { authFetch } from "../../utils/authFetch";
 
 function AdminPanel() {
   const { theme } = useContext(ThemeContext);
-  const { token, user } = useContext(AuthContext);
+  const { token, user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [isAuthorized, setIsAuthorized] = useState(false);
@@ -58,32 +59,28 @@ function AdminPanel() {
 
   const validarCampoEnTiempoReal = (name, value) => {
     let errorMensaje = "";
+    const trimmedValue = value.trim();
 
-    if (value.trim() === "") {
-      setErrors(prev => ({ ...prev, [name]: undefined }));
-      return;
-    }
-
-    if (name === "nombre" && value.length < 3) {
+    if (trimmedValue === "") {
+      errorMensaje = "Este campo es obligatorio";
+    } else if (name === "nombre" && trimmedValue.length < 3) {
       errorMensaje = "El nombre debe tener al menos 3 caracteres";
-    }
-
-    if (name === "marca" && value.length < 2) {
+    } else if (name === "marca" && trimmedValue.length < 2) {
       errorMensaje = "La marca debe tener al menos 2 caracteres";
-    }
-
-    if (name === "precio" && (isNaN(value) || parseFloat(value) <= 0)) {
-      errorMensaje = "El precio debe ser mayor a 0";
-    }
-
-    if (name === "stock" && (isNaN(value) || parseInt(value) < 0)) {
-      errorMensaje = "El stock no puede ser negativo";
-    }
-
-    if (name === "imagenUrl") {
-      const regexUrl = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))$/i;
-      if (!regexUrl.test(value)) {
-        errorMensaje = "Debe ser una URL válida de imagen";
+    } else if (name === "precio") {
+      const precioFloat = parseFloat(value);
+      if (isNaN(precioFloat) || precioFloat <= 0) {
+        errorMensaje = "El precio debe ser un número mayor a 0";
+      }
+    } else if (name === "stock") {
+      const stockInt = Number(value);
+      if (!Number.isInteger(stockInt) || stockInt < 0) {
+        errorMensaje = "El stock debe ser un número entero mayor o igual a 0";
+      }
+    } else if (name === "imagenUrl") {
+      const regexUrl = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))$|^(\/[\w\-.\/]+\.(?:png|jpg|jpeg|gif|webp))$/i;
+      if (!regexUrl.test(trimmedValue)) {
+        errorMensaje = "Debe ser una URL o ruta relativa válida de imagen";
       }
     }
 
@@ -91,6 +88,50 @@ function AdminPanel() {
       ...prev,
       [name]: errorMensaje || undefined
     }));
+  };
+
+  const validarFormulario = () => {
+    const nuevosErrores = {};
+    const { nombre, marca, precio, stock, imagenUrl } = formData;
+    const trimmedName = nombre.trim();
+    const trimmedBrand = marca.trim();
+    const trimmedImage = imagenUrl.trim();
+
+    if (!trimmedName) {
+      nuevosErrores.nombre = "El nombre es obligatorio";
+    } else if (trimmedName.length < 3) {
+      nuevosErrores.nombre = "El nombre debe tener al menos 3 caracteres";
+    }
+
+    if (!trimmedBrand) {
+      nuevosErrores.marca = "La marca es obligatoria";
+    } else if (trimmedBrand.length < 2) {
+      nuevosErrores.marca = "La marca debe tener al menos 2 caracteres";
+    }
+
+    const precioFloat = parseFloat(precio);
+    if (precio === "") {
+      nuevosErrores.precio = "El precio es obligatorio";
+    } else if (isNaN(precioFloat) || precioFloat <= 0) {
+      nuevosErrores.precio = "El precio debe ser un número mayor a 0";
+    }
+
+    const stockInt = Number(stock);
+    if (stock === "") {
+      nuevosErrores.stock = "El stock es obligatorio";
+    } else if (!Number.isInteger(stockInt) || stockInt < 0) {
+      nuevosErrores.stock = "El stock debe ser un número entero mayor o igual a 0";
+    }
+
+    const regexUrl = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))$|^(\/[\w\-.\/]+\.(?:png|jpg|jpeg|gif|webp))$/i;
+    if (!trimmedImage) {
+      nuevosErrores.imagenUrl = "La imagen es obligatoria";
+    } else if (!regexUrl.test(trimmedImage)) {
+      nuevosErrores.imagenUrl = "Debe ser una URL o ruta relativa válida de imagen";
+    }
+
+    setErrors(nuevosErrores);
+    return nuevosErrores;
   };
 
   const handleChange = (e) => {
@@ -111,10 +152,10 @@ function AdminPanel() {
     validarCampoEnTiempoReal("stock", formData.stock);
     validarCampoEnTiempoReal("imagenUrl", formData.imagenUrl);
 
-    const tieneErrores = Object.values(errors).some(error => error !== undefined);
-    const camposVacios = !formData.nombre || !formData.marca || !formData.precio || !formData.stock || !formData.imagenUrl;
+    const nuevosErrores = validarFormulario();
+    const tieneErrores = Object.keys(nuevosErrores).length > 0;
 
-    if (tieneErrores || camposVacios) {
+    if (tieneErrores) {
       setToastType("error");
       setToastMessage("Por favor, completa todos los campos correctamente.");
       setShowToast(true);
@@ -122,14 +163,20 @@ function AdminPanel() {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/api/crear", {
+      const response = await authFetch("http://localhost:3000/api/crear", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Authorization": token
         },
-        body: JSON.stringify(formData)
-      });
+        body: JSON.stringify({
+          nombre: formData.nombre.trim(),
+          marca: formData.marca.trim(),
+          precio: parseFloat(formData.precio),
+          stock: parseInt(formData.stock, 10),
+          imagenUrl: formData.imagenUrl.trim()
+        })
+      }, logout, navigate);
 
       if (!response.ok) {
         const errorData = await response.json();

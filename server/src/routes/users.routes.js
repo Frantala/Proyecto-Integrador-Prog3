@@ -1,40 +1,35 @@
 import { Router } from "express";
-import { User } from "../models/User.js";
 import { verificarToken } from "../middlewares/verificarToken.js";
 import { verificarRol } from "../middlewares/roleMiddleware.js";
+import { getAllUsers, promoteUserByEmail, demoteUserByEmail } from "../controllers/user.controller.js";
 
 const usersRouter = Router();
 
-usersRouter.patch(
-  "/:id/promote",
+// Lista los usuarios del sistema para que el super-admin pueda ver qué emails existen.
+// Responde solo con id, nombre, email y rol; no expone contraseñas.
+usersRouter.get(
+  "/",
   verificarToken,
   verificarRol(["super-admin"]),
-  async (req, res) => {
-    const { email } = req.body;
-
-    await User.update(
-      { role: "admin" },
-      { where: { id: req.params.id, email } }
-    );
-
-    res.json({ message: "Usuario promovido a admin" });
-  }
+  getAllUsers
 );
 
+// Promueve a un usuario a rol admin usando el email enviado en el body.
+// El body debe ser { email: "usuario@example.com" }.
 usersRouter.patch(
-  "/:id/demote",
+  "/promote",
   verificarToken,
   verificarRol(["super-admin"]),
-  async (req, res) => {
-    const { email } = req.body;
+  promoteUserByEmail
+);
 
-    await User.update(
-      { role: "usuario" },
-      { where: { id: req.params.id, email } }
-    );
-
-    res.json({ message: "Usuario degradado a usuario común" });
-  }
+// Revoca el rol admin de un usuario usando el email enviado en el body.
+// Solo los usuarios con rol super-admin pueden ejecutar esta ruta.
+usersRouter.patch(
+  "/demote",
+  verificarToken,
+  verificarRol(["super-admin"]),
+  demoteUserByEmail
 );
 
 export default usersRouter;

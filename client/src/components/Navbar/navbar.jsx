@@ -12,6 +12,7 @@ const CustomNavbar = () => {
   const navigate = useNavigate(); 
 
   const isAdmin = user && (user.role === "admin" || user.role === "superadmin" || user.role === "super-admin");
+  const isSuperAdmin = user && (user.role === "super-admin" || user.role === "superadmin");
 
   // Función para manejar el clic en cerrar sesión
   const handleLogout = () => {
@@ -48,6 +49,11 @@ const CustomNavbar = () => {
             {isAdmin && (
               <Nav.Link as={Link} to="/admin">
                 Admin
+              </Nav.Link>
+            )}
+            {isSuperAdmin && (
+              <Nav.Link as={Link} to="/superadmin">
+                SuperAdmin
               </Nav.Link>
             )}
           </Nav>

@@ -6,7 +6,7 @@ import { AuthContext } from './context/AuthContext.jsx';
 import { authFetch } from './utils/authFetch.js';
 import './App.css';
 import './index.css';
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import CustomNavbar from './components/Navbar/navbar.jsx';
 import ProductCard from './components/ProductCard/ProductCard.jsx';
 import AboutUs from './pages/AboutUs/AboutUs/AboutUs.jsx';
@@ -160,7 +160,6 @@ function App() {
   }, []);
 
   return (
-    <Router>
       <div style={{
         minHeight: "100vh",
         display: "flex",
@@ -247,7 +246,6 @@ function App() {
 
         <Footer />
       </div>
-    </Router>
   );
 }
 

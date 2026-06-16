@@ -15,6 +15,7 @@ import Login from './pages/Auth/Login/Login.jsx';
 import Cart from './pages/Cart/Cart.jsx'; 
 import Register from './pages/Auth/Register/Register.jsx';
 import AdminPanel from './pages/AdminPanel/AdminPanel.jsx';
+import SuperAdmin from './components/SuperAdmin/SuperAdmin.jsx';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute.jsx';
 
 function App() {
@@ -241,6 +242,7 @@ function App() {
                 <AdminPanel />
               </ProtectedRoute>
             } />
+            <Route path="/superadmin" element={<SuperAdmin />} />
           </Routes>
         </div>
 

@@ -126,11 +126,6 @@ export const createProduct = async (req, res) => {
         return res.status(400).json({ mensaje: "El stock debe ser un número entero mayor o igual a 0" });
     }
 
-    const imagePattern = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))$|^(\/[\w\-.\/]+\.(?:png|jpg|jpeg|gif|webp))$/i;
-    if (!imagePattern.test(imagenUrlString)) {
-        return res.status(400).json({ mensaje: "La imagen debe ser una URL válida de imagen o una ruta relativa válida" });
-    }
-
     try {
         const newProduct = await Product.create({
             nombre: nombre.trim(),

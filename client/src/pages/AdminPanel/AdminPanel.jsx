@@ -78,11 +78,14 @@ function AdminPanel() {
         errorMensaje = "El stock debe ser un número entero mayor o igual a 0";
       }
     } else if (name === "imagenUrl") {
-      const regexUrl = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))$|^(\/[\w\-.\/]+\.(?:png|jpg|jpeg|gif|webp))$/i;
-      if (!regexUrl.test(trimmedValue)) {
-        errorMensaje = "Debe ser una URL o ruta relativa válida de imagen";
-      }
-    }
+  // Aceptar Base64 o URLs
+  const isBase64 = trimmedValue.startsWith("data:image/");
+  const isUrl = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))$|^(\/[\w\-.\/]+\.(?:png|jpg|jpeg|gif|webp))$/i.test(trimmedValue);
+  
+  if (!isBase64 && !isUrl) {
+    errorMensaje = "Debes seleccionar una imagen válida";
+  }
+}
 
     setErrors(prev => ({
       ...prev,
@@ -125,10 +128,15 @@ function AdminPanel() {
 
     const regexUrl = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))$|^(\/[\w\-.\/]+\.(?:png|jpg|jpeg|gif|webp))$/i;
     if (!trimmedImage) {
-      nuevosErrores.imagenUrl = "La imagen es obligatoria";
-    } else if (!regexUrl.test(trimmedImage)) {
-      nuevosErrores.imagenUrl = "Debe ser una URL o ruta relativa válida de imagen";
-    }
+  nuevosErrores.imagenUrl = "La imagen es obligatoria";
+} else {
+  const isBase64 = trimmedImage.startsWith("data:image/");
+  const isUrl = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))$|^(\/[\w\-.\/]+\.(?:png|jpg|jpeg|gif|webp))$/i.test(trimmedImage);
+  
+  if (!isBase64 && !isUrl) {
+    nuevosErrores.imagenUrl = "Debes seleccionar una imagen válida";
+  }
+}
 
     setErrors(nuevosErrores);
     return nuevosErrores;
@@ -142,6 +150,21 @@ function AdminPanel() {
     }));
     validarCampoEnTiempoReal(name, value);
   };
+
+  const handleFileChange = (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    setFormData({
+      ...formData,
+      imagenUrl: event.target.result
+    });
+    validarCampoEnTiempoReal("imagenUrl", event.target.result);
+  };
+  reader.readAsDataURL(file);
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -194,6 +217,8 @@ function AdminPanel() {
         stock: "",
         imagenUrl: ""
       });
+      // Recargar la página para que la vista principal muestre el nuevo producto
+      window.location.reload();
 
     } catch (error) {
       setToastType("error");
@@ -301,10 +326,10 @@ function AdminPanel() {
                     Imagen (URL)
                   </Form.Label>
                   <Form.Control
-                    type="text"
-                    name="imagenUrl"
-                    value={formData.imagenUrl}
-                    onChange={handleChange}
+                    type="file"
+                    name="imagen"
+                    accept="image/*"
+                    onChange={handleFileChange}
                     isInvalid={!!errors.imagenUrl}
                     isValid={formData.imagenUrl && !errors.imagenUrl}
                     className={theme === "light" ? "" : "bg-secondary"}

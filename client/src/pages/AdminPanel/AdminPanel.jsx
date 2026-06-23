@@ -99,26 +99,26 @@ function AdminPanel() {
     const trimmedName = nombre.trim();
     const trimmedBrand = marca.trim();
     const trimmedImage = imagenUrl.trim();
-
+  // Validación de campos
     if (!trimmedName) {
       nuevosErrores.nombre = "El nombre es obligatorio";
     } else if (trimmedName.length < 3) {
       nuevosErrores.nombre = "El nombre debe tener al menos 3 caracteres";
     }
-
+    // Validación de marca
     if (!trimmedBrand) {
       nuevosErrores.marca = "La marca es obligatoria";
     } else if (trimmedBrand.length < 2) {
       nuevosErrores.marca = "La marca debe tener al menos 2 caracteres";
     }
-
+    // Validación de precio
     const precioFloat = parseFloat(precio);
     if (precio === "") {
       nuevosErrores.precio = "El precio es obligatorio";
     } else if (isNaN(precioFloat) || precioFloat <= 0) {
       nuevosErrores.precio = "El precio debe ser un número mayor a 0";
     }
-
+    // Validación de stock
     const stockInt = Number(stock);
     if (stock === "") {
       nuevosErrores.stock = "El stock es obligatorio";
@@ -141,7 +141,7 @@ function AdminPanel() {
     setErrors(nuevosErrores);
     return nuevosErrores;
   };
-
+  // validación de campos en tiempo real
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -151,6 +151,7 @@ function AdminPanel() {
     validarCampoEnTiempoReal(name, value);
   };
 
+  //
   const handleFileChange = (e) => {
   const file = e.target.files[0];
   if (!file) return;
@@ -165,7 +166,7 @@ function AdminPanel() {
   };
   reader.readAsDataURL(file);
 };
-
+  // Función para manejar el envío del formulario 
   const handleSubmit = async (e) => {
     e.preventDefault();
 

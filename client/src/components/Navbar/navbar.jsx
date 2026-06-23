@@ -11,6 +11,7 @@ const CustomNavbar = () => {
   const { token, user, logout } = useContext(AuthContext); 
   const navigate = useNavigate(); 
 
+  // verificacion de roles
   const isAdmin = user && (user.role === "admin" || user.role === "superadmin" || user.role === "super-admin");
   const isSuperAdmin = user && (user.role === "super-admin" || user.role === "superadmin");
 
@@ -38,10 +39,10 @@ const CustomNavbar = () => {
           <span className="brand-text">Hustlery</span>
         </BootstrapNavbar.Brand>
 
-        {/* Toggle para menú hamburguesa en móvil */}
+        
         <BootstrapNavbar.Toggle aria-controls="basic-navbar-nav" className="navbar-toggler-custom" />
 
-        {/* Contenedor colapsable */}
+      
         <BootstrapNavbar.Collapse id="basic-navbar-nav" className="navbar-collapse-custom">
           <Nav className="nav-links fw-medium">
             <Nav.Link as={Link} to="/">Inicio</Nav.Link>

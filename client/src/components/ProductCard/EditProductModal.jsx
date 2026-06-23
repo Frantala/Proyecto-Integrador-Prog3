@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 
+// modal para editar un producto
 function EditProductModal({ show, handleClose, product, onSave }) {
   const [formValues, setFormValues] = useState({
     name: "",
@@ -9,7 +10,7 @@ function EditProductModal({ show, handleClose, product, onSave }) {
     stock: "",
     image: ""
   });
-
+  // Cuando el producto cambia, actualizamos los valores del formulario 
   useEffect(() => {
     if (product) {
       setFormValues({
@@ -22,11 +23,13 @@ function EditProductModal({ show, handleClose, product, onSave }) {
     }
   }, [product]);
 
+  // Función para manejar los cambios 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormValues((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Función para manejar el guardado de cambios
   const handleSave = () => {
     const confirmed = window.confirm("¿Estás seguro de guardar los cambios?");
     if (!confirmed) return;

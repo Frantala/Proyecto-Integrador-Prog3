@@ -5,11 +5,11 @@ import { ThemeContext } from "../../../context/ThemeContext";
 
 function Register() {
   const navigate = useNavigate();
-
+  // Estados para manejar el Toast
   const [showToast, setShowToast] = useState(false);
   const [toastType, setToastType] = useState("success");
   const [toastMessage, setToastMessage] = useState("");
-
+  // Contexto para el tema 
   const { theme } = useContext(ThemeContext);
   const [formData, setFormData] = useState({
     name: "", 
@@ -19,7 +19,7 @@ function Register() {
   });
 
   const [errors, setErrors] = useState({});
-
+  // Función para validar campos en tiempo real
   const validarCampo = (name, value) => {
     let errorMensaje = "";
 

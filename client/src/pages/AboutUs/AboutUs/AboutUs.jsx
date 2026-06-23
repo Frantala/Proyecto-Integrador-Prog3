@@ -25,9 +25,9 @@ const AboutUs = () => {
     // 3. Contenedor principal dinámico
     <div style={{ backgroundColor: theme === "light" ? "#f0fbfc" : "#121212", minHeight: '100vh' }} className="py-5">
       <Container>
-        {/* Encabezado */}
+        
         <div className="text-center mb-5">
-          {/* Título adaptativo */}
+          
           <h1 className={`fw-bold display-4 ${theme === "light" ? "text-dark" : "text-white"}`}>
             Sobre Hustlery
           </h1>
@@ -36,7 +36,6 @@ const AboutUs = () => {
           </p>
         </div>
 
-        {/* Misión y Visión */}
         <Row className="mb-5 g-4">
           <Col md={6}>
             <div className={`p-4 rounded shadow-sm h-100 border-start border-4 border-info ${theme === "light" ? "bg-white text-dark" : "bg-dark text-white"}`}>
@@ -60,14 +59,13 @@ const AboutUs = () => {
           </Col>
         </Row>
 
-        {/* Sección del Equipo */}
         <h2 className={`fw-bold mb-4 text-center ${theme === "light" ? "text-dark" : "text-white"}`}>
           Desarrolladores
         </h2>
         <Row className="justify-content-center g-4">
           {team.map((member, index) => (
             <Col key={index} md={4}>
-              {/* Tarjetas de desarrolladores dinámicas */}
+
               <Card className={`h-100 border-0 shadow-sm text-center p-4 hover-card ${theme === "light" ? "bg-white text-dark" : "bg-dark text-white"}`}>
                 <Card.Body className="d-flex flex-column align-items-center">
                   <div 

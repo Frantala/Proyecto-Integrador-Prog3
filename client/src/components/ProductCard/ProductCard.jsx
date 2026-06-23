@@ -5,17 +5,20 @@ import Modal_Detalles from "../Modal_Detalles/Modal_Detalles";
 import EditProductModal from "./EditProductModal";
 import { ThemeContext } from "../../context/ThemeContext";
 
+
 function ProductCard({ product, addToCart, isAdmin, onDelete, onUpdate }) {
   const [show, setShow] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const { theme, toggleTheme } = useContext(ThemeContext);
 
+  // Función para la eliminación de un producto 
   const handleDelete = () => {
     const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar este producto?");
     if (!confirmDelete) return;
     onDelete(product.id);
   };
 
+  // funcion para actualizar un producto 
   const handleSave = (updatedProduct) => {
     onUpdate(updatedProduct);
     setShowEdit(false);

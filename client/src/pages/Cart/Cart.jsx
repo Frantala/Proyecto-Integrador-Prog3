@@ -10,10 +10,10 @@ const Cart = ({ cartItems, setCart, updateQuantity, removeFromCart, token }) => 
   const navigate = useNavigate(); // <-- Instanciamos el navegador
   const [successMessage, setSuccessMessage] = useState(""); // <-- Estado para el cartel de agradecimiento
 
-  // Cálculo del total directo sin subtotal ni envío
+  // Cálculo del total directo 
   const total = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
 
-  // 🚀 FUNCIÓN CLAVE: Manejo del botón "Finalizar Compra"
+  //Manejo del botón "Finalizar Compra"
   const handleCheckout = () => {
     if (cartItems.length === 0) {
       alert("Tu carrito está vacío.");
@@ -24,11 +24,11 @@ const Cart = ({ cartItems, setCart, updateQuantity, removeFromCart, token }) => 
       // Si NO está logueado: Redirigimos al Login
       navigate("/login");
     } else {
-      // Si SÍ está logueado: Mostramos el cartel de éxito y vaciamos el carrito
+      // SÍ está logueado: Mostramos el cartel de éxito y vaciamos el carrito
       setSuccessMessage("¡Muchas gracias por comprar en Hustlery!");
       setCart([]); // Vaciamos el carrito de la App
       
-      // Opcional: Limpiar el mensaje después de unos segundos
+      // Limpiamos el mensaje 
       setTimeout(() => {
         setSuccessMessage("");
         navigate("/"); // Lo mandamos al inicio después de comprar
@@ -40,7 +40,6 @@ const Cart = ({ cartItems, setCart, updateQuantity, removeFromCart, token }) => 
     <div style={{ backgroundColor: theme === "light" ? "#f0fbfc" : "#121212", minHeight: "100vh" }} className="py-5">
       <Container>
         
-        {/* Cartel flotante de éxito (Agradecimiento) */}
         {successMessage && (
           <div style={{
             position: 'fixed',
@@ -61,7 +60,6 @@ const Cart = ({ cartItems, setCart, updateQuantity, removeFromCart, token }) => 
           </div>
         )}
 
-        {/* Título adaptativo */}
         <h1 className={`fw-bold mb-5 d-flex align-items-center gap-3 ${theme === "light" ? "text-dark" : "text-white"}`}>
           <ShoppingBag size={40} /> Mi Carrito
         </h1>
@@ -169,8 +167,6 @@ const Cart = ({ cartItems, setCart, updateQuantity, removeFromCart, token }) => 
                     ${total.toLocaleString()}
                   </span>
                 </div>
-
-                {/* ✅ Se le asigna la función handleCheckout al botón */}
                 <Button 
                   className="w-100 py-3 fw-bold border-0" 
                   style={{ backgroundColor: "#2563eb" }}

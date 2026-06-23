@@ -28,6 +28,7 @@ function App() {
   const navigate = useNavigate();
   const isAdmin = user?.role === "admin" || user?.role === "super-admin";
 
+  // Función para eliminar un producto
   const handleDeleteProduct = async (id) => {
     if (!token) return;
 
@@ -55,6 +56,7 @@ function App() {
     }
   };
 
+  // Función para la actualización de un producto
   const handleUpdateProduct = async (updatedProduct) => {
     if (!token) return;
 
@@ -105,6 +107,7 @@ function App() {
     }
   };
 
+  // Función para agregar un producto al carrito
   const addToCart = (product) => {
     setCart((prevCart) => {
       const existingItem = prevCart.find((item) => item.id === product.id);
@@ -124,6 +127,7 @@ function App() {
     });
   };
 
+  // Función para actualizar la cantidad de un producto en el carrito
   const updateQuantity = (id, action) => {
     setCart(cart.map(item => {
       if (item.id === id) {
@@ -138,10 +142,12 @@ function App() {
     }));
   };
 
+  // Función para eliminar un producto del carrito
   const removeFromCart = (id) => {
     setCart(cart.filter(product => product.id !== id));
   };
 
+  // traer productos desde el backend
   useEffect(() => {
     const fetchGorras = async () => {
       try {
@@ -190,7 +196,6 @@ function App() {
           </div>
         )}
 
-        {/* ✅ Contenido flexible */}
         <div style={{ flex: 1 }}>
           <Routes>
             <Route

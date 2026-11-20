@@ -1,5 +1,5 @@
 import Product from "../models/Product.js";
-
+import { NODE_ENV } from "../config.js";
 
 export const getProducts = async (req, res) => {
     try {
@@ -8,8 +8,7 @@ export const getProducts = async (req, res) => {
     } catch (error) {
         console.error("DETALLE DEL ERROR:", error);
         res.status(500).json({ 
-            mensaje: "Error al obtener las gorras", 
-            detalle: error.message 
+            mensaje: "Error al obtener las gorras"
         });
     }
 };
@@ -17,6 +16,11 @@ export const getProducts = async (req, res) => {
 // Función para agregar datos de prueba
 export const seedProducts = async (req, res) => {
     try {
+        // En producción, deshabilitar la regeneración destructiva
+        if (NODE_ENV === 'production' && req.query.force === 'true') {
+            return res.status(403).json({ mensaje: "Acción no permitida en entorno de producción" });
+        }
+
         const productsCount = await Product.count();
         
         // Permitir regenerar si se especifica force=true
@@ -93,8 +97,7 @@ export const seedProducts = async (req, res) => {
     } catch (error) {
         console.error("DETALLE DEL ERROR:", error);
         res.status(500).json({ 
-            mensaje: "Error al crear productos de prueba", 
-            detalle: error.message 
+            mensaje: "Error al crear productos de prueba"
         });
     }
 };
@@ -139,8 +142,7 @@ export const createProduct = async (req, res) => {
     } catch (error) {
         console.error("DETALLE DEL ERROR:", error);
         res.status(500).json({ 
-            mensaje: "Error al crear el producto", 
-            detalle: error.message 
+            mensaje: "Error al crear el producto"
         });
     }
 };
@@ -149,19 +151,53 @@ export const updateProduct = async (req, res) => {
     const { id } = req.params;
     const { nombre, marca, precio, stock, imagenUrl } = req.body;
 
+    const productId = parseInt(id, 10);
+    if (!Number.isInteger(productId) || productId <= 0) {
+        return res.status(400).json({ mensaje: "ID de producto inválido" });
+    }
+
+    // Validaciones de campos
+    if (nombre !== undefined && (typeof nombre !== 'string' || nombre.trim().length < 3)) {
+        return res.status(400).json({ mensaje: "El nombre debe tener al menos 3 caracteres" });
+    }
+
+    if (marca !== undefined && (typeof marca !== 'string' || marca.trim().length < 2)) {
+        return res.status(400).json({ mensaje: "La marca debe tener al menos 2 caracteres" });
+    }
+
+    if (precio !== undefined) {
+        const precioFloat = Number(precio);
+        if (!Number.isFinite(precioFloat) || precioFloat <= 0) {
+            return res.status(400).json({ mensaje: "El precio debe ser un número mayor a 0" });
+        }
+    }
+
+    if (stock !== undefined) {
+        const stockInt = Number(stock);
+        if (!Number.isInteger(stockInt) || stockInt < 0) {
+            return res.status(400).json({ mensaje: "El stock debe ser un número entero mayor o igual a 0" });
+        }
+    }
+
     try {
-        const product = await Product.findByPk(id);
+        const product = await Product.findByPk(productId);
         if (!product) {
             return res.status(404).json({ mensaje: "Producto no encontrado" });
         }
 
-        await product.update({ nombre, marca, precio, stock, imagenUrl });
+        const updateData = {};
+        if (nombre !== undefined) updateData.nombre = nombre.trim();
+        if (marca !== undefined) updateData.marca = marca.trim();
+        if (precio !== undefined) updateData.precio = Number(precio);
+        if (stock !== undefined) updateData.stock = Number(stock);
+        if (imagenUrl !== undefined) updateData.imagenUrl = String(imagenUrl).trim();
+
+        await product.update(updateData);
         res.json({ mensaje: "Producto actualizado correctamente", producto: product });
     } catch (error) {
         console.error("DETALLE DEL ERROR:", error);
         res.status(500).json({ 
-            mensaje: "Error al actualizar producto", 
-            detalle: error.message 
+            mensaje: "Error al actualizar producto"
         });
     }
 };
@@ -169,8 +205,13 @@ export const updateProduct = async (req, res) => {
 export const deleteProduct = async (req, res) => {
     const { id } = req.params;
 
+    const productId = parseInt(id, 10);
+    if (!Number.isInteger(productId) || productId <= 0) {
+        return res.status(400).json({ mensaje: "ID de producto inválido" });
+    }
+
     try {
-        const product = await Product.findByPk(id);
+        const product = await Product.findByPk(productId);
         if (!product) {
             return res.status(404).json({ mensaje: "Producto no encontrado" });
         }
@@ -180,8 +221,7 @@ export const deleteProduct = async (req, res) => {
     } catch (error) {
         console.error("DETALLE DEL ERROR:", error);
         res.status(500).json({ 
-            mensaje: "Error al eliminar producto", 
-            detalle: error.message 
+            mensaje: "Error al eliminar producto"
         });
     }
 };

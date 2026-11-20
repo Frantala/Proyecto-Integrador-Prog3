@@ -11,25 +11,22 @@ export const getAllUsers = async (req, res) => {
     res.json(users);
   } catch (error) {
     console.error("Error en getAllUsers:", error);
-    res.status(500).json({ message: "Error al obtener usuarios", error: error.message });
+    res.status(500).json({ message: "Error al obtener usuarios" });
   }
 };
 
 // Promociona un usuario a admin usando el email enviado en el body.
-// Validaciones:
-// - El email debe estar presente.
-// - El usuario debe existir.
-// - No se puede modificar el rol de un super-admin.
-// - No se puede promover a alguien que ya es admin.
 export const promoteUserByEmail = async (req, res) => {
   const { email } = req.body;
 
-  if (!email) {
+  if (!email || typeof email !== "string") {
     return res.status(400).json({ message: "El email es requerido." });
   }
 
+  const normalizedEmail = email.trim().toLowerCase();
+
   try {
-    const user = await User.findOne({ where: { email } });
+    const user = await User.findOne({ where: { email: normalizedEmail } });
 
     if (!user) {
       return res.status(404).json({ message: "Usuario no encontrado." });
@@ -48,25 +45,22 @@ export const promoteUserByEmail = async (req, res) => {
     res.json({ message: "Permisos de administrador otorgados.", user: { id: user.id, email: user.email, role: user.role } });
   } catch (error) {
     console.error("Error en promoteUserByEmail:", error);
-    res.status(500).json({ message: "Error al actualizar el rol del usuario.", error: error.message });
+    res.status(500).json({ message: "Error al actualizar el rol del usuario." });
   }
 };
 
 // Demota a un usuario administrador de vuelta a usuario normal.
-// Validaciones:
-// - El email debe estar presente.
-// - El usuario debe existir.
-// - No se puede demotar a un super-admin.
-// - Solo se pueden demotar usuarios que actualmente son admin.
 export const demoteUserByEmail = async (req, res) => {
   const { email } = req.body;
 
-  if (!email) {
+  if (!email || typeof email !== "string") {
     return res.status(400).json({ message: "El email es requerido." });
   }
 
+  const normalizedEmail = email.trim().toLowerCase();
+
   try {
-    const user = await User.findOne({ where: { email } });
+    const user = await User.findOne({ where: { email: normalizedEmail } });
 
     if (!user) {
       return res.status(404).json({ message: "Usuario no encontrado." });
@@ -85,6 +79,6 @@ export const demoteUserByEmail = async (req, res) => {
     res.json({ message: "Permisos de administrador revocados.", user: { id: user.id, email: user.email, role: user.role } });
   } catch (error) {
     console.error("Error en demoteUserByEmail:", error);
-    res.status(500).json({ message: "Error al actualizar el rol del usuario.", error: error.message });
+    res.status(500).json({ message: "Error al actualizar el rol del usuario." });
   }
 };

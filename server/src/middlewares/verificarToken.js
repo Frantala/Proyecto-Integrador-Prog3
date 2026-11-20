@@ -1,19 +1,20 @@
 import jwt from 'jsonwebtoken';
+import { JWT_SECRET } from '../config.js';
 
 export const verificarToken = (req, res, next) => {
-  const token = req.headers['authorization'];
+  const authHeader = req.headers['authorization'];
 
-  if (!token) {
+  if (!authHeader) {
     return res.status(401).json({ 
       message: "No se proporcionó token. Acceso denegado." 
     });
   }
 
+  const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : authHeader;
+
   try {
-    const secretKey = 'proyecto-2026';
-    
-    // Desencriptamos el token
-    const decoded = jwt.verify(token, secretKey);
+    // Verificamos el token con la clave secreta de entorno
+    const decoded = jwt.verify(token, JWT_SECRET);
     
     // Guardamos los datos del usuario en req.usuario para usarlos después
     req.usuario = decoded;

@@ -247,7 +247,11 @@ function App() {
                 <AdminPanel />
               </ProtectedRoute>
             } />
-            <Route path="/superadmin" element={<SuperAdmin />} />
+            <Route path="/superadmin" element={
+              <ProtectedRoute allowedRoles={["super-admin"]}>
+                <SuperAdmin />
+              </ProtectedRoute>
+            } />
           </Routes>
         </div>
 

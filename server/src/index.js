@@ -13,11 +13,12 @@ import gorrasRoutes from "./routes/gorras.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import usersRoutes from "./routes/users.routes.js";
 
-
 const app = express();
+
 app.use(cors());
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ limit: '50mb', extended: true }));
+// Límite ajustado a 10mb para permitir imágenes en base64 sin sobrecargar la memoria del proceso
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 // Usamos el enrutador con un prefijo
 app.use('/api', gorrasRoutes);
@@ -27,7 +28,6 @@ app.use("/api/users", usersRoutes);
 // Función para arrancar todo
 async function main() {
     try {
-        // Esta es la línea mágica que crea el archivo .sqlite
         await sequelize.sync(); 
         console.log('Conexión a la base de datos exitosa y modelos actualizados!');
 

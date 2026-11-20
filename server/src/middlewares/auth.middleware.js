@@ -1,33 +1,27 @@
 import jwt from 'jsonwebtoken';
+import { JWT_SECRET } from '../config.js';
 
 export const isAdmin = (req, res, next) => {
-    // buscamos los encabezados de la peticion
+    const authHeader = req.headers['authorization'];
 
-    const token = req.headers['authorization'];
-
-    if(!token)
-    {
-        return res.status(403).json({message: "No se proporciono el acceso"});
+    if (!authHeader) {
+        return res.status(403).json({ message: "No se proporcionó el acceso" });
     }
+
+    const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : authHeader;
 
     try {
-        const secretKey = 'proyecto-2026';
-
         // Desencriptamos el token con la clave secreta
-        const decoded = jwt.verify(token, secretKey);
+        const decoded = jwt.verify(token, JWT_SECRET);
 
-        //verificamos si el rol guardado cumple con los privilegios
-        if(decoded.role === "admin" || decoded.role === "super-admin") {
+        // Verificamos si el rol cumple con los privilegios
+        if (decoded.role === "admin" || decoded.role === "super-admin") {
             req.usuario = decoded;
             next();
-        }
-        else {
-            // Si es un cliente común ("client"), le denegamos el acceso
+        } else {
             return res.status(403).json({ message: "Acceso denegado: Se requieren permisos de administrador" });
         }
-        
-    }
-    catch(error) {
-        return res.status(401).json({message: "Token invalido o expirado"});
+    } catch (error) {
+        return res.status(401).json({ message: "Token inválido o expirado" });
     }
 };

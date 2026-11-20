@@ -2,17 +2,17 @@ import { useContext } from "react";
 import { Navigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 
-// ruta protegida para los admin
-function ProtectedRoute({ children }) {
+// Ruta protegida configurable por rol
+function ProtectedRoute({ children, allowedRoles = ["admin", "super-admin"] }) {
   const { token, user } = useContext(AuthContext);
-
-  const isAdmin = user?.role === "admin" || user?.role === "super-admin";
 
   if (!token) {
     return <Navigate to="/login" replace />;
   }
 
-  if (!isAdmin) {
+  const hasRole = user && allowedRoles.includes(user.role);
+
+  if (!hasRole) {
     return <Navigate to="/" replace />;
   }
 

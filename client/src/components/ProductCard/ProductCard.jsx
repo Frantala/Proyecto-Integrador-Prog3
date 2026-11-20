@@ -1,15 +1,13 @@
-import { useState } from "react";
-import { useContext } from "react";
+import { useState, useContext } from "react";
 import { ShoppingCart, Edit, Trash2 } from "lucide-react";
 import Modal_Detalles from "../Modal_Detalles/Modal_Detalles";
 import EditProductModal from "./EditProductModal";
 import { ThemeContext } from "../../context/ThemeContext";
 
-
 function ProductCard({ product, addToCart, isAdmin, onDelete, onUpdate }) {
   const [show, setShow] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
-  const { theme, toggleTheme } = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
 
   // Función para la eliminación de un producto 
   const handleDelete = () => {
@@ -87,8 +85,13 @@ function ProductCard({ product, addToCart, isAdmin, onDelete, onUpdate }) {
           </div>
         </div>
       </div>
-      
-      <Modal_Detalles show={show} handleClose={() => setShow(false)} product={product} addToCart={addToCart} />
+
+      <Modal_Detalles
+        show={show}
+        handleClose={() => setShow(false)}
+        product={product}
+        addToCart={addToCart}
+      />
       <EditProductModal
         show={showEdit}
         handleClose={() => setShowEdit(false)}

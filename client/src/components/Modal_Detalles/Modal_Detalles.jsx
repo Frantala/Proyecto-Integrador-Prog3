@@ -1,22 +1,45 @@
 import { Modal, Button } from "react-bootstrap";
 import { useContext } from "react";
 import { ShoppingCart } from "lucide-react";
+import Tilt from "react-parallax-tilt";
 import { ThemeContext } from "../../context/ThemeContext";
 
 function Modal_Detalles({ show, handleClose, product, addToCart }) {
-  const { theme, toggleTheme } = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
   return (
     <Modal contentClassName={theme === "light" ? "" : "bg-dark text-white"} show={show} onHide={handleClose} centered>
       <Modal.Header closeButton>
         <Modal.Title>{product.name}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <img
-          src={product.image}
-          alt={product.name}
-          className="img-fluid mb-3"
-          style={{ borderRadius: "8px" }}
-        />
+        <div className="d-flex justify-content-center mb-3">
+          <Tilt
+            perspective={800}
+            glareEnable={true}
+            glareMaxOpacity={0.3}
+            glareColor="#ffffff"
+            glarePosition="all"
+            glareBorderRadius="12px"
+            scale={1.05}
+            tiltMaxAngleX={15}
+            tiltMaxAngleY={15}
+            transitionSpeed={1200}
+            gyroscope={true}
+            style={{ borderRadius: "12px", overflow: "hidden", display: "inline-block" }}
+          >
+            <img
+              src={product.image}
+              alt={product.name}
+              className="img-fluid d-block"
+              style={{
+                borderRadius: "12px",
+                maxHeight: "340px",
+                objectFit: "contain",
+                cursor: "pointer",
+              }}
+            />
+          </Tilt>
+        </div>
         <p><strong>Categoria:</strong> {product.category}</p>
         <p><strong>Stock:</strong> {product.stock}</p>
         <p><strong>Precio:</strong> ${product.price}</p>
